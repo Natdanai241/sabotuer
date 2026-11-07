@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0920">
+<title>เหมืองเพชรคนแคระทั้ง 7 · Saboteur</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;700;800&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+<script>
+window.__bootTimer=setTimeout(function(){if(!window.__booted){var e=document.getElementById('bootError');if(e)e.style.display='flex';}},8000);
+window.addEventListener('error',function(ev){if(!window.__booted){var e=document.getElementById('bootError'),m=document.getElementById('bootErrorMsg');if(e){e.style.display='flex';if(m)m.textContent='เกิดข้อผิดพลาดขณะโหลดเกม: '+(ev.message||'ไม่ทราบสาเหตุ');}}});
+(function(){function load(src,next){var s=document.createElement('script');s.src=src;s.async=true;s.onload=function(){window.__peerFail=false;};s.onerror=function(){if(next)load(next,null);else window.__peerFail=true;};document.head.appendChild(s);}
+load('https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js','https://cdn.jsdelivr.net/npm/peerjs@1.5.4/dist/peerjs.min.js');})();
+</script>
+<style>
+:root{--bg:#070616;--glass:rgba(24,20,54,.92);--glass2:rgba(38,31,80,.95);--line:rgba(127,233,255,.24);--line2:rgba(255,255,255,.08);--gem:#7fe9ff;--gem2:#d9fbff;--vio:#b48cff;--gold:#ffd36b;--text:#eef0ff;--muted:#a9a6d2;--ok:#5fe3a1;--bad:#ff6b8a;--appH:100vh}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{background:var(--bg);-webkit-text-size-adjust:100%}
+body{min-height:100%;color:var(--text);font-family:'Sarabun',system-ui,-apple-system,'Segoe UI',sans-serif;font-size:15px;line-height:1.45;background:var(--bg);overflow-x:hidden;-webkit-tap-highlight-color:transparent;user-select:none;-webkit-user-select:none;overscroll-behavior:none}
+h1,h2,h3,button{font-family:'Kanit','Sarabun',system-ui,sans-serif}
+button{cursor:pointer;border:0;color:inherit;font:inherit;background:none;-webkit-appearance:none;appearance:none;touch-action:manipulation}
+input{font:inherit;user-select:text;-webkit-user-select:text}
+/* ---------- background ---------- */
+#bg{position:fixed;top:0;left:0;right:0;bottom:0;z-index:0;pointer-events:none;overflow:hidden;background:radial-gradient(110% 70% at 50% -10%,#3d2c84 0%,#16113e 48%,#060512 100%)}
+#bg:after{content:"";position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(140% 100% at 50% 50%,transparent 55%,rgba(0,0,0,.65))}
+.blob{position:absolute;width:50vmax;height:50vmax;border-radius:50%;animation:flicker 5s ease-in-out infinite}
+.blob.c{background:radial-gradient(circle,rgba(127,233,255,.13),transparent 62%)}
+.blob.v{background:radial-gradient(circle,rgba(180,140,255,.14),transparent 62%)}
+.spark{position:absolute;width:5px;height:5px;background:#e6fdff;box-shadow:0 0 8px #7fe9ff,0 0 14px #7fe9ff;opacity:0;transform:rotate(45deg);animation:twinkle ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:0;transform:rotate(45deg) scale(.3)}50%{opacity:.9;transform:rotate(45deg) scale(1)}}
+@keyframes flicker{0%,100%{opacity:.75}50%{opacity:1}}
+#app{position:relative;z-index:1}
+/* ---------- screens ---------- */
+.screen{display:none;min-height:var(--appH);padding:max(18px,env(safe-area-inset-top)) 14px max(18px,env(safe-area-inset-bottom))}
+.screen.active{display:flex;flex-direction:column}
+.wrap{margin:auto;width:100%;max-width:520px}
+.wrap>*+*{margin-top:14px}
+/* ---------- buttons ---------- */
+.btn{display:flex;align-items:center;justify-content:center;width:100%;min-width:0;min-height:46px;padding:10px 12px;border-radius:14px;background:linear-gradient(180deg,#3b3174,#211b4a);border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 4px 14px rgba(0,0,0,.4);color:var(--text);font-size:15.5px;font-weight:500;line-height:1.2;text-align:center;white-space:nowrap;overflow:hidden;transition:transform .12s,filter .15s,opacity .15s}
+.btn:hover:not(:disabled){filter:brightness(1.15)}
+.btn:active:not(:disabled){transform:translateY(2px)}
+.btn.gem{background:linear-gradient(180deg,#b5f7ff,#4fb4f0 55%,#6b6cff);color:#06142c;border-color:#d9fbff;font-weight:700}
+.btn.green{background:linear-gradient(180deg,#6ff0b0,#21946a);color:#03170e;border-color:#b5f7d8;font-weight:700}
+.btn.ghost{background:rgba(255,255,255,.05);box-shadow:none}
+.btn:disabled{opacity:.35;cursor:not-allowed;filter:grayscale(.6)}
+.btn .qs{margin-left:6px;color:var(--muted);font-size:13px}
+.btn.on .qs{color:var(--ok)}
+.icon-btn{display:flex;align-items:center;justify-content:center;width:40px;height:40px;flex:0 0 40px;border-radius:12px;background:rgba(255,255,255,.07);border:1px solid var(--line);font-size:17px;line-height:1}
+.icon-btn:hover{filter:brightness(1.3)}
+.panel{background:var(--glass);border:1px solid var(--line);border-radius:20px;box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 18px 50px rgba(0,0,0,.6)}
+/* ---------- menu ---------- */
+.hero{display:block;width:100%;max-width:440px;height:auto;margin:0 auto;filter:drop-shadow(0 12px 30px rgba(0,0,0,.6))}
+.title{text-align:center;font-weight:800;font-size:40px;line-height:1.15;color:var(--gem);background:linear-gradient(180deg,#ffffff,#a6f4ff 50%,#8f8cff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.title span{display:block;font-size:24px;font-weight:700}
+@media(max-width:380px){.title{font-size:34px}.title span{font-size:20px}}
+.subtitle{text-align:center;color:var(--muted);font-size:14.5px}
+.wrap>.subtitle{margin-top:6px}
+.mode{display:grid;grid-template-columns:52px minmax(0,1fr) 16px;column-gap:12px;align-items:center;width:100%;padding:14px;border-radius:18px;text-align:left;background:linear-gradient(160deg,rgba(62,50,126,.97),rgba(24,20,54,.98));border:1px solid var(--line);box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 8px 24px rgba(0,0,0,.45);transition:transform .15s,filter .15s}
+.mode:hover{transform:translateY(-2px);filter:brightness(1.1)}
+.mode+.mode,.menu-list>.btn{margin-top:10px}
+.mode.primary{background:linear-gradient(150deg,#b5f7ff,#4fa8f0 55%,#7a5cff);color:#06122a;border-color:#d9fbff}
+.mi{width:52px;height:52px;border-radius:14px;background:rgba(0,0,0,.2);display:flex;align-items:center;justify-content:center;font-size:26px}
+.mt{min-width:0}
+.mt b{display:block;font-family:Kanit;font-size:18px;line-height:1.25}
+.mt small{display:block;font-size:13px;opacity:.85;line-height:1.35}
+.mgo{font-size:22px;opacity:.7}
+.quick{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));column-gap:8px}
+.qbtn{display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:0;height:72px;padding:6px 4px;border-radius:16px;background:rgba(255,255,255,.05);border:1px solid var(--line2);overflow:hidden}
+.qbtn:hover{background:rgba(255,255,255,.09)}
+.qi{font-size:20px;line-height:24px}
+.ql{font-size:13.5px;line-height:18px;white-space:nowrap}
+.qbtn .qs{font-size:11.5px;line-height:15px;color:var(--muted)}
+.qbtn.on .qs{color:var(--ok)}
+.foot{color:var(--muted);font-size:12px;text-align:center;opacity:.75}
+/* ---------- setup ---------- */
+.setup{padding:18px}
+.setup>*+*,.stack>*+*{margin-top:14px}
+.head{display:grid;grid-template-columns:40px minmax(0,1fr);column-gap:10px;align-items:center}
+.head h2{color:var(--gem);font-size:21px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.field>*+*{margin-top:6px}
+label{display:block;color:var(--muted);font-size:14px}
+input{display:block;width:100%;min-height:46px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:#110e2a;color:var(--text);outline:none}
+input:focus{border-color:var(--gem);box-shadow:0 0 0 3px rgba(127,233,255,.18)}
+.check{display:grid;grid-template-columns:22px minmax(0,1fr);column-gap:10px;align-items:center;color:var(--text);font-size:14.5px}
+.check input{width:22px;height:22px;min-height:0;accent-color:#7fe9ff}
+.seg{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:6px}
+@media(max-width:420px){.seg{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.seg.r5{grid-template-columns:repeat(5,minmax(0,1fr))}
+.seg button{min-height:44px;border-radius:12px;background:#1b1640;border:1px solid var(--line);font-weight:500}
+.seg button.on{background:linear-gradient(180deg,#b5f7ff,#4fb4f0);color:#06142c;font-weight:700}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:4px;border-radius:14px;background:rgba(0,0,0,.32)}
+.tabs button{min-height:42px;border-radius:10px}
+.tabs button.on{background:linear-gradient(180deg,#b5f7ff,#4fb4f0);color:#06142c;font-weight:700}
+.code{font-family:Kanit;font-size:40px;letter-spacing:.3em;padding:6px 0 6px .3em;color:var(--gem);text-align:center;background:#0e0b26;border-radius:14px;border:1px dashed var(--gem)}
+@media(max-width:380px){.code{font-size:32px}}
+.linkrow{display:grid;grid-template-columns:minmax(0,1fr) 96px;column-gap:8px}
+.err{color:#ffd9e2;background:rgba(255,80,120,.15);border:1px solid rgba(255,107,138,.55);padding:10px;border-radius:12px}
+.status{color:var(--muted);font-size:14px;line-height:1.5}
+.note{color:var(--muted);font-size:12.5px;line-height:1.55;border-top:1px solid var(--line2);padding-top:10px}
+.members>*+*{margin-top:6px}
+.member{display:grid;grid-template-columns:34px minmax(0,1fr) auto;column-gap:10px;align-items:center;padding:6px 10px;background:#141033;border-radius:12px}
+.member .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.member .tag{font-size:12px;color:var(--muted)}
+.av{width:34px;height:34px}
+.av svg{display:block;width:100%;height:100%}
+/* ================= GAME ================= */
+#scr-game{padding:0}
+#scr-game.active{display:grid;height:var(--appH);min-height:420px;overflow:hidden;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto minmax(0,1fr) auto;grid-template-areas:"players" "bar" "banner" "board" "dock"}
+#players{grid-area:players;display:flex;min-width:0;overflow-x:auto;overflow-y:hidden;padding:8px 8px 6px;padding-top:max(8px,env(safe-area-inset-top));background:linear-gradient(180deg,rgba(9,7,26,.97),rgba(18,14,46,.94));border-bottom:1px solid var(--line2);scrollbar-width:none;-webkit-overflow-scrolling:touch}
+#players::-webkit-scrollbar{display:none}
+.pchip{flex:0 0 auto;display:grid;grid-template-columns:32px minmax(0,1fr);column-gap:7px;align-items:center;width:140px;height:46px;padding:0 8px 0 6px;margin-right:6px;border-radius:14px;background:var(--glass2);border:1px solid var(--line2);transition:box-shadow .2s,border-color .2s,background .2s}
+.pchip:last-child{margin-right:0}
+.pchip .av{width:32px;height:32px;border-radius:50%;overflow:hidden}
+.pchip.turn{border-color:var(--gem);box-shadow:0 0 0 1px var(--gem),0 0 14px rgba(127,233,255,.45)}
+.pchip.targetable{border-color:var(--ok);box-shadow:0 0 0 1px var(--ok),0 0 14px rgba(95,227,161,.6);cursor:pointer;animation:pulse 1.2s infinite}
+.pchip.pending{background:#1b4a3f}
+.pinfo{min-width:0}
+.pname{font-family:Kanit;font-size:12.5px;line-height:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pchip.me .pname{color:var(--ok)}
+.pmeta{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;height:18px;line-height:18px}
+.pmeta span{margin-right:4px}
+.tb{display:inline-block;font-size:11px;background:rgba(255,80,120,.25);border:1px solid rgba(255,107,138,.7);border-radius:5px;padding:0 2px;line-height:15px}
+.tb.stamp{animation:stamp .5s}
+.offl{color:var(--bad)}
+.rb{display:inline-block;font-size:11px;padding:0 6px;border-radius:6px;line-height:17px;white-space:nowrap}
+.rb.sab{background:#6e1a3a;color:#ffd2df}.rb.miner{background:#16584a;color:#d3fff0}
+#bar{grid-area:bar;display:grid;grid-template-columns:auto minmax(0,1fr) auto;column-gap:8px;align-items:center;padding:6px 8px;background:rgba(14,11,36,.9);border-bottom:1px solid var(--line)}
+.rolepill{height:34px;padding:0 12px;border-radius:999px;border:1px solid var(--line);background:rgba(0,0,0,.3);font-size:13.5px;white-space:nowrap}
+.rolepill.sab{border-color:var(--bad);background:rgba(120,20,60,.5)}
+.rolepill.miner{border-color:var(--ok);background:rgba(20,90,70,.45)}
+.stats{display:flex;min-width:0;overflow:hidden}
+.pill{flex:0 0 auto;height:30px;line-height:28px;padding:0 9px;margin-right:5px;border-radius:999px;background:rgba(0,0,0,.32);border:1px solid var(--line2);font-family:Kanit;font-size:13.5px;white-space:nowrap}
+.pill b{color:var(--gem2);font-weight:500}
+.pill.room b{color:var(--ok);letter-spacing:1px}
+@media(max-width:380px){.pill{padding:0 6px;margin-right:3px;font-size:12.5px}.rolepill{padding:0 8px;font-size:12.5px}}
+.tbtns{display:flex}
+.tbtns .icon-btn+.icon-btn{margin-left:6px}
+#netBanner{grid-area:banner;background:#5a1430;color:#ffe0ea;padding:6px 10px;font-size:13px;text-align:center}
+#boardWrap{grid-area:board;position:relative;overflow:hidden;margin:8px;min-height:0;border-radius:18px;border:1px solid var(--line2);background:radial-gradient(90% 90% at 50% 50%,rgba(60,46,120,.5),rgba(4,3,14,.6));box-shadow:inset 0 0 60px rgba(0,0,0,.75)}
+#board{position:absolute;left:0;top:0;transform-origin:0 0;transition:transform .35s ease;background-image:radial-gradient(circle,rgba(127,233,255,.16) 0,rgba(127,233,255,.16) 2px,transparent 3px);background-size:64px 88px}
+#board.noanim{transition:none}
+#marks{position:absolute;left:0;top:0;width:0;height:0;z-index:5}
+.tile{position:absolute;width:64px;height:88px;border-radius:8px;z-index:1;filter:drop-shadow(0 3px 4px rgba(0,0,0,.7))}
+.tile svg,.ghost svg{display:block;width:100%;height:100%}
+.tile.drop{animation:drop .45s cubic-bezier(.2,1.4,.4,1)}
+.tile.flip{animation:flip .7s ease}
+.tile.crumble{animation:crumble .45s forwards;pointer-events:none}
+.tile.last{box-shadow:0 0 0 3px rgba(127,233,255,.95),0 0 22px rgba(127,233,255,.7)}
+.tile.targetable{box-shadow:0 0 0 3px var(--ok),0 0 16px rgba(95,227,161,.6);cursor:pointer;animation:pulse 1.2s infinite;z-index:6}
+.tile.pend{box-shadow:0 0 0 3px var(--gold),0 0 18px rgba(255,211,107,.8)}
+.cand{position:absolute;width:64px;height:88px;border-radius:8px;border:2px dashed rgba(95,227,161,.95);background:rgba(95,227,161,.15);cursor:pointer}
+.cand.alt{border-color:rgba(255,211,107,.85);background:rgba(255,211,107,.1)}
+.cand:hover{background:rgba(95,227,161,.32)}
+.ghost{position:absolute;width:64px;height:88px;pointer-events:none;border-radius:8px;box-shadow:0 0 0 3px var(--gold),0 0 20px rgba(255,211,107,.7);animation:ghost .9s ease-in-out infinite alternate}
+#dock{grid-area:dock;display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"hint" "hand" "acts";row-gap:6px;padding:6px 8px;padding-bottom:max(8px,env(safe-area-inset-bottom));background:linear-gradient(180deg,#1b1642,#0c0a22);border-top:1px solid var(--line);transition:border-color .3s,box-shadow .3s}
+#dock.mine{border-top-color:var(--gem);box-shadow:0 -4px 24px rgba(127,233,255,.2)}
+#hint{grid-area:hint;height:22px;line-height:22px;font-size:13.5px;color:var(--muted);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#dock.mine #hint{color:var(--gem2);font-weight:600}
+#hand{grid-area:hand;position:relative;min-width:0;overflow:hidden;height:86px}
+#handInner{display:flex;justify-content:center;align-items:flex-end;height:100%;padding-bottom:2px}
+#handEmpty{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;color:var(--muted);font-size:14px}
+.hcard{flex:0 0 auto;position:relative;width:50px;height:70px;border-radius:8px;overflow:hidden;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.6);transition:transform .18s,box-shadow .18s}
+.hcard svg{display:block;width:100%;height:100%;transition:transform .3s}
+.hcard.rot svg{transform:rotate(180deg)}
+.hcard.sel{transform:translateY(-6px);box-shadow:0 0 0 3px var(--gem),0 0 18px rgba(127,233,255,.75)}
+.hcard.blocked svg{filter:grayscale(.75) brightness(.6)}
+.hcard.deal{animation:deal .5s ease-out}
+#actBtns{grid-area:acts;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));column-gap:6px;row-gap:6px}
+#actBtns .btn{min-height:42px;padding:6px 3px;font-size:14px;border-radius:12px}
+@media(max-width:340px){#actBtns .btn{font-size:12.5px}}
+@media(min-width:820px){
+ #dock{grid-template-columns:minmax(0,1fr) 320px;grid-template-areas:"hint hint" "hand acts";column-gap:12px}
+ #actBtns{grid-template-columns:1fr 1fr;align-content:center}
+}
+@media(orientation:landscape) and (max-height:520px){
+ #scr-game.active{min-height:260px;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"players bar" "banner banner" "board board" "dock dock"}
+ #players{padding:5px 6px;padding-top:max(5px,env(safe-area-inset-top));border-bottom:1px solid var(--line)}
+ #bar{grid-template-columns:auto auto auto;padding:5px 8px;padding-top:max(5px,env(safe-area-inset-top));background:rgba(9,7,26,.97)}
+ .pchip{height:38px;width:128px}.pchip .av{width:26px;height:26px}.pchip{grid-template-columns:26px minmax(0,1fr)}
+ .pill{height:28px;line-height:26px}.icon-btn{width:34px;height:34px;flex-basis:34px}.rolepill{height:30px}
+ #boardWrap{margin:4px 8px}
+ #dock{grid-template-columns:minmax(0,1fr) 230px;grid-template-areas:"hint hint" "hand acts";column-gap:10px;row-gap:2px;padding-top:2px}
+ #actBtns{grid-template-columns:1fr 1fr;align-content:center;row-gap:4px}
+ #actBtns .btn{min-height:32px;font-size:13px;padding:3px}
+ #hint{height:18px;line-height:18px;font-size:12.5px}
+}
+/* ---------- overlays ---------- */
+.overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:50;display:none;overflow-y:auto;padding:max(14px,env(safe-area-inset-top)) 12px max(14px,env(safe-area-inset-bottom));background:rgba(4,3,14,.82);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);-webkit-overflow-scrolling:touch}
+.overlay.show{display:flex;flex-direction:column;animation:fade .2s}
+.modal{width:100%;max-width:520px;margin:auto;padding:18px}
+.modal>*+*{margin-top:12px}
+.modal h2{font-size:21px;color:var(--gem);line-height:1.3}
+.modal h3{color:var(--gem2);margin-bottom:6px;font-size:17px}
+.modal p,.modal li{line-height:1.65;font-size:15px}
+.modal ul{padding-left:20px}
+.modal table{border-collapse:collapse;width:100%;font-size:13.5px;margin-top:6px}
+.modal td,.modal th{border:1px solid var(--line);padding:4px;text-align:center}
+.mhead{display:grid;grid-template-columns:minmax(0,1fr) 40px;column-gap:10px;align-items:center}
+.center{text-align:center}
+.btnrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}
+.sheet-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:340px){.sheet-grid{grid-template-columns:minmax(0,1fr)}}
+.rolecard{width:100%;max-width:300px;margin-left:auto;margin-right:auto;padding:18px;border-radius:20px;text-align:center;animation:rolein .8s ease;border:2px solid var(--gem)}
+.rolecard.sab{background:linear-gradient(#5a1434,#22071a);border-color:#ff6b8a}
+.rolecard.miner{background:linear-gradient(#17584a,#08261f);border-color:#5fe3a1}
+.rolecard .big{font-size:44px;line-height:1.2}
+.rolecard h3{font-size:25px;margin:4px 0;color:#fff}
+.rolecard .av{width:96px;height:96px;margin:0 auto}
+.rows>*+*{margin-top:6px}
+.resrow{display:grid;grid-template-columns:34px minmax(0,1fr) auto;column-gap:10px;align-items:center;padding:6px 10px;border-radius:12px;background:rgba(0,0,0,.28)}
+.resrow.rank{grid-template-columns:24px 34px minmax(0,1fr) auto}
+.resrow .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.resrow .gain{color:var(--gem2);font-family:Kanit;white-space:nowrap}
+.resrow.win{background:rgba(127,233,255,.14);border:1px solid var(--gem)}
+.gemrow{display:grid;grid-template-columns:repeat(auto-fill,72px);justify-content:center;gap:10px}
+.gemcard{width:72px;cursor:pointer;transition:transform .15s}
+.gemcard:hover{transform:translateY(-6px)}
+.gemcard.back{cursor:default}.gemcard.back:hover{transform:none}
+.gemcard svg{display:block;width:100%;height:auto}
+.peekcard{width:110px;margin-left:auto;margin-right:auto}
+.peekcard svg{display:block;width:100%;height:auto;border-radius:8px}
+.tut-page{display:none}.tut-page.on{display:block}
+.tutnav{display:grid;grid-template-columns:1fr auto 1fr;column-gap:10px;align-items:center}
+.tut-dots{display:flex;align-items:center}
+.tut-dots i{display:block;width:8px;height:8px;border-radius:4px;background:#40397a;margin:0 3px;transition:width .2s}
+.tut-dots i.on{background:var(--gem);width:18px}
+#toasts{position:fixed;left:50%;top:16px;z-index:90;width:92%;max-width:420px;transform:translateX(-50%);pointer-events:none}
+.toast{background:#1d1844;border:1px solid var(--line);padding:9px 12px;margin-bottom:6px;border-radius:12px;box-shadow:0 6px 20px rgba(0,0,0,.5);font-size:14px;text-align:center;transition:opacity .4s,transform .4s}
+.toast.bad{border-color:var(--bad);background:#3a1026}.toast.good{border-color:var(--ok)}
+.toast.out{opacity:0;transform:translateY(-8px)}
+#bootError{position:fixed;top:0;left:0;right:0;bottom:0;z-index:100;display:none;align-items:center;justify-content:center;flex-direction:column;background:#070616;color:#ffd9e2;padding:20px;text-align:center;font-size:16px}
+#bootError>*{margin:6px 0}
+@keyframes drop{0%{transform:translateY(-30px) scale(1.25);opacity:0}100%{transform:none;opacity:1}}
+@keyframes flip{0%{transform:perspective(400px) rotateY(90deg)}100%{transform:perspective(400px) rotateY(0)}}
+@keyframes crumble{to{transform:scale(.55) rotate(10deg);opacity:0}}
+@keyframes pulse{50%{filter:brightness(1.35)}}
+@keyframes deal{from{transform:translateY(40px) rotate(8deg);opacity:0}}
+@keyframes stamp{0%{transform:scale(2.4);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes fade{from{opacity:0}}
+@keyframes ghost{from{opacity:.55}to{opacity:.95}}
+@keyframes rolein{from{transform:perspective(600px) rotateY(180deg) scale(.8);opacity:.3}to{transform:none;opacity:1}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<noscript><div style="padding:20px;color:#fff">เกมนี้ต้องเปิดใช้ JavaScript</div></noscript>
+<div id="bootError"><b>โหลดเกมไม่สำเร็จ</b><span id="bootErrorMsg">โปรดรีเฟรชหน้า หรือใช้เบราว์เซอร์รุ่นใหม่</span><button class="btn gem" style="width:auto" onclick="location.reload()">รีโหลด</button></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<linearGradient id="gRock" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4d4480"/><stop offset=".55" stop-color="#2b2554"/><stop offset="1" stop-color="#16122f"/></linearGradient>
+<linearGradient id="gDirt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f0dcb4"/><stop offset="1" stop-color="#b99868"/></linearGradient>
+<pattern id="pRock" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="4" cy="5" r="1.7" fill="#120f28"/><circle cx="14" cy="12" r="1.2" fill="#6a5fa8"/><circle cx="9" cy="17" r=".9" fill="#120f28"/></pattern>
+<linearGradient id="gDia" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".4" stop-color="#9ff3ff"/><stop offset=".75" stop-color="#4fa8f0"/><stop offset="1" stop-color="#6b5cff"/></linearGradient>
+<linearGradient id="gBack" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#26408a"/><stop offset="1" stop-color="#0c1232"/></linearGradient>
+<linearGradient id="gAct" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a3c9e"/><stop offset="1" stop-color="#211548"/></linearGradient>
+<radialGradient id="gGlow"><stop offset="0" stop-color="#ffd76a" stop-opacity=".9"/><stop offset="1" stop-color="#ffd76a" stop-opacity="0"/></radialGradient>
+<radialGradient id="gGemGlow"><stop offset="0" stop-color="#9ff3ff" stop-opacity=".85"/><stop offset="1" stop-color="#9ff3ff" stop-opacity="0"/></radialGradient>
+</defs></svg>
+
+<div id="bg"></div>
+<div id="app">
+
+ <!-- MENU -->
+ <section id="scr-menu" class="screen active"><div class="wrap">
+  <svg class="hero" viewBox="0 0 520 230" width="520" height="230" aria-hidden="true">
+   <path d="M20 230 Q20 28 260 18 Q500 28 500 230Z" fill="#110d2e" stroke="#3d3482" stroke-width="6"/>
+   <rect x="70" y="66" width="16" height="164" fill="#5b3d26"/><rect x="434" y="66" width="16" height="164" fill="#5b3d26"/>
+   <rect x="58" y="56" width="404" height="16" rx="4" fill="#6e4a2c"/>
+   <line x1="260" y1="72" x2="260" y2="84" stroke="#2a2040" stroke-width="2"/>
+   <circle cx="260" cy="92" r="30" fill="url(#gGlow)"/><rect x="253" y="84" width="14" height="17" rx="3" fill="#ffd76a" stroke="#6e4a2c" stroke-width="2"/>
+   <g opacity=".95"><polygon points="98,160 108,112 118,160" fill="#7fe9ff"/><polygon points="112,160 124,124 134,160" fill="#b48cff"/><polygon points="90,160 96,134 102,160" fill="#ff9ad5"/>
+   <polygon points="402,160 412,118 422,160" fill="#b48cff"/><polygon points="388,160 398,128 408,160" fill="#7fe9ff"/><polygon points="420,160 426,136 432,160" fill="#ff9ad5"/></g>
+   <circle cx="260" cy="128" r="46" fill="url(#gGemGlow)"/>
+   <g id="heroGem"></g>
+   <g id="heroDwarfs"></g>
+  </svg>
+  <h1 class="title">เหมืองเพชร<span>ของคนแคระทั้ง 7</span></h1>
+  <p class="subtitle">SABOTEUR · ใครคือฝ่ายร้ายที่แฝงตัวอยู่ในเหมือง?</p>
+  <div class="menu-list">
+   <button class="mode primary" id="btnSolo"><span class="mi">🤖</span><span class="mt"><b>เล่นกับบอท</b><small>3–10 ผู้เล่น · บอทคิดตามบทบาทลับ</small></span><span class="mgo">›</span></button>
+   <button class="mode" id="btnOnline"><span class="mi">🌐</span><span class="mt"><b>เล่นออนไลน์</b><small>สร้าง/เข้าห้องด้วยรหัส 5 ตัว</small></span><span class="mgo">›</span></button>
+   <button class="btn ghost" id="btnResume" hidden>🔁 กลับเข้าเกมเดิม</button>
+  </div>
+  <div class="quick">
+   <button class="qbtn" id="btnHowto"><span class="qi">📖</span><span class="ql">วิธีเล่น</span><span class="qs">กติกา</span></button>
+   <button class="qbtn" data-tog="music"><span class="qi">🎵</span><span class="ql">เพลง</span><span class="qs">ปิด</span></button>
+   <button class="qbtn" data-tog="sfx"><span class="qi">🔊</span><span class="ql">เสียง</span><span class="qs">เปิด</span></button>
+  </div>
+  <p class="foot">ดัดแปลงจากบอร์ดเกม Saboteur (เกมพื้นฐาน) เพื่อการเล่นส่วนตัว</p>
+ </div></section>
+
+ <!-- SOLO -->
+ <section id="scr-solo" class="screen"><div class="wrap"><div class="panel setup">
+  <div class="head"><button class="icon-btn" id="soloBack" title="กลับ">←</button><h2>🤖 เล่นกับบอท</h2></div>
+  <div class="field"><label for="soloName">ชื่อของคุณ</label><input id="soloName" maxlength="16" placeholder="คนแคระนิรนาม"></div>
+  <div class="field"><label>จำนวนผู้เล่นทั้งหมด (รวมคุณ)</label><div class="seg" id="soloCount"></div></div>
+  <div class="field"><label>จำนวนรอบที่จะเล่น (นับเพชรสะสมรวม)</label><div class="seg r5" id="soloRounds"></div></div>
+  <label class="check"><input type="checkbox" id="soloStone" checked><span>ถึงการ์ดหิน = ฝ่ายร้ายชนะทันที (ถ้าไม่ติ๊ก จะเล่นต่อตามกติกาต้นฉบับ)</span></label>
+  <div class="status" id="soloInfo"></div>
+  <button class="btn gem" id="soloStart">เริ่มเกม ⛏️</button>
+ </div></div></section>
+
+ <!-- ONLINE -->
+ <section id="scr-online" class="screen"><div class="wrap"><div class="panel setup">
+  <div class="head"><button class="icon-btn" id="onBack" title="กลับ">←</button><h2>🌐 เล่นออนไลน์</h2></div>
+  <div id="onForm" class="stack">
+   <div class="field"><label for="onName">ชื่อของคุณ</label><input id="onName" maxlength="16" placeholder="คนแคระนิรนาม"></div>
+   <div class="tabs"><button id="tabCreate" class="on">สร้างห้อง</button><button id="tabJoin">เข้าร่วมห้อง</button></div>
+   <div id="paneCreate" class="stack">
+    <div class="field"><label>จำนวนที่นั่งทั้งหมด (รวมคุณ)</label><div class="seg" id="onSeats"></div></div>
+    <div class="field"><label>จำนวนรอบที่จะเล่น</label><div class="seg r5" id="onRounds"></div></div>
+    <label class="check"><input type="checkbox" id="onStone" checked><span>ถึงการ์ดหิน = ฝ่ายร้ายชนะทันที</span></label>
+    <label class="check"><input type="checkbox" id="onFill" checked><span>เติมที่นั่งว่างด้วยบอทเมื่อเริ่มเกม</span></label>
+    <button class="btn gem" id="onCreate">สร้างห้อง</button>
+   </div>
+   <div id="paneJoin" class="stack" hidden>
+    <div class="field"><label for="onCode">รหัสห้อง (5 ตัวอักษร)</label><input id="onCode" maxlength="5" autocapitalize="characters" autocomplete="off" spellcheck="false" style="text-transform:uppercase;letter-spacing:8px;font-size:24px;text-align:center"></div>
+    <button class="btn gem" id="onJoin">เข้าร่วมห้อง</button>
+   </div>
+  </div>
+  <div id="onLobby" class="stack" hidden>
+   <div class="status">รหัสห้อง — ส่งให้เพื่อนเพื่อเข้าร่วม</div>
+   <div class="code" id="lbCode">-----</div>
+   <div class="linkrow"><input id="lbLink" readonly><button class="btn" id="lbCopy">คัดลอก</button></div>
+   <div class="status" id="lbInfo"></div>
+   <div class="members" id="lbMembers"></div>
+   <button class="btn gem" id="lbStart" hidden>เริ่มเกม</button>
+   <div class="status" id="lbWait" hidden>⏳ รอโฮสต์เริ่มเกม...</div>
+   <button class="btn ghost" id="lbLeave">ออกจากห้อง</button>
+  </div>
+  <div class="status" id="onStatus"></div>
+  <div class="err" id="onError" hidden></div>
+  <p class="note">เชื่อมต่อแบบเพียร์ถึงเพียร์ (WebRTC) ผ่านบริการจับคู่สาธารณะของ PeerJS เพื่อให้ผู้เล่นหากันเจอเท่านั้น เครื่องโฮสต์ควบคุมกติกาและข้อมูลลับทั้งหมด ถ้าโฮสต์ปิดหน้านี้ เกมจะหยุดจนกว่าโฮสต์จะกด “กลับเข้าเกมเดิม” เครือข่ายบางแห่งอาจเชื่อมต่อแบบ P2P ไม่ได้</p>
+ </div></div></section>
+
+ <!-- GAME -->
+ <section id="scr-game" class="screen">
+  <div id="players"></div>
+  <header id="bar">
+   <button class="rolepill" id="roleChip" title="ดูบทบาทของคุณ">🎭 บทบาท</button>
+   <div class="stats">
+    <div class="pill" title="รอบ">รอบ <b id="stRound">1/3</b></div>
+    <div class="pill" title="การ์ดในกองจั่ว">🂠 <b id="stDeck">0</b></div>
+    <div class="pill" title="เพชรของคุณ">💎 <b id="stGold">0</b></div>
+    <div class="pill room" id="stRoomBox" title="รหัสห้อง" hidden>🌐 <b id="stRoom"></b></div>
+   </div>
+   <div class="tbtns">
+    <button class="icon-btn" id="btnLog" title="บันทึกเกม">📜</button>
+    <button class="icon-btn" id="btnMenu" title="เมนู">☰</button>
+   </div>
+  </header>
+  <div id="netBanner" hidden></div>
+  <main id="boardWrap"><div id="board"><div id="marks"></div></div></main>
+  <footer id="dock">
+   <div id="hint">—</div>
+   <div id="hand"><div id="handInner"></div><div id="handEmpty" hidden>ไม่มีการ์ดในมือ</div></div>
+   <div id="actBtns">
+    <button class="btn" id="btnRotate" disabled>⟳ หมุน</button>
+    <button class="btn" id="btnDiscard" disabled>🗑 ทิ้ง</button>
+    <button class="btn ghost" id="btnCancel" disabled>✕ ยกเลิก</button>
+    <button class="btn green" id="btnConfirm" disabled>✔ ใช้</button>
+   </div>
+  </footer>
+ </section>
+</div>
+
+<!-- OVERLAYS -->
+<div class="overlay" id="ov-role"><div class="modal panel center">
+ <div class="status">บทบาทลับของคุณในรอบนี้</div>
+ <div class="rolecard" id="roleCard"><div class="av" id="roleAv"></div><div class="big" id="roleIcon"></div><h3 id="roleName"></h3><p id="roleDesc" style="font-size:14px"></p></div>
+ <div class="status">🤫 อย่าบอกใคร! ไม่มีใครรู้บทบาทของคุณ</div>
+ <button class="btn gem" id="roleOk">เข้าใจแล้ว</button>
+</div></div>
+
+<div class="overlay" id="ov-draft"><div class="modal panel center">
+ <h2>💎 ขุดพบเพชรแล้ว!</h2>
+ <div id="draftText" class="status"></div>
+ <div class="gemrow" id="draftCards"></div>
+</div></div>
+
+<div class="overlay" id="ov-round"><div class="modal panel">
+ <h2 id="roundTitle"></h2>
+ <div class="status" id="roundSub"></div>
+ <div class="rows" id="roundRows"></div>
+ <div class="status" id="roundExtra"></div>
+ <button class="btn gem" id="roundNext">รอบถัดไป</button>
+</div></div>
+
+<div class="overlay" id="ov-win"><div class="modal panel">
+ <h2 id="winTitle">🏆</h2>
+ <div class="rows" id="winRows"></div>
+ <div class="status" id="winWait"></div>
+ <div class="btnrow"><button class="btn ghost" id="winMenu">กลับเมนู</button><button class="btn gem" id="winAgain">เล่นอีกครั้ง</button></div>
+</div></div>
+
+<div class="overlay" id="ov-peek"><div class="modal panel center">
+ <h2>🗺️ แผนที่ลับ</h2>
+ <div class="peekcard" id="peekCard"></div>
+ <p id="peekText"></p>
+ <div class="status">มีแค่คุณที่เห็นข้อมูลนี้ (การ์ดที่ดูแล้วจะมีป้ายกำกับบนกระดานของคุณ)</div>
+ <button class="btn gem" id="peekOk">จำไว้แล้ว</button>
+</div></div>
+
+<div class="overlay" id="ov-choice"><div class="modal panel">
+ <h2 id="choiceTitle"></h2><p id="choiceText"></p>
+ <div class="btnrow" id="choiceBtns"></div>
+</div></div>
+
+<div class="overlay" id="ov-menu"><div class="modal panel">
+ <div class="mhead"><h2>⚙️ เมนู</h2><button class="icon-btn" id="smClose" title="ปิด">✕</button></div>
+ <div class="status" id="smRoom" hidden></div>
+ <div class="sheet-grid">
+  <button class="btn" data-tog="music">🎵 เพลง<span class="qs">ปิด</span></button>
+  <button class="btn" data-tog="sfx">🔊 เสียง<span class="qs">เปิด</span></button>
+  <button class="btn" id="smHelp">📖 วิธีเล่น</button>
+  <button class="btn" id="smLog">📜 บันทึกเกม</button>
+  <button class="btn" id="smRole">🎭 บทบาทของฉัน</button>
+  <button class="btn" id="smExit">🚪 ออกจากเกม</button>
+ </div>
+</div></div>
+
+<div class="overlay" id="ov-log"><div class="modal panel">
+ <div class="mhead"><h2>📜 บันทึกเกม</h2><button class="icon-btn" id="logClose" title="ปิด">✕</button></div>
+ <div id="logList2" style="max-height:62vh;overflow-y:auto;font-size:13.5px"></div>
+</div></div>
+
+<div class="overlay" id="ov-error"><div class="modal panel">
+ <h2 id="errTitle">เกิดข้อผิดพลาด</h2><p id="errText"></p>
+ <div class="btnrow"><button class="btn ghost" onclick="location.reload()">รีโหลด</button><button class="btn gem" id="errMenu">กลับเมนู</button></div>
+</div></div>
+
+<div class="overlay" id="ov-tut"><div class="modal panel">
+ <div class="mhead"><h2>📖 วิธีเล่น</h2><button class="icon-btn" id="tutClose" title="ปิด">✕</button></div>
+ <div class="tut-page"><h3>⛏️ เป้าหมาย</h3><p>คุณคือคนแคระในเหมืองเพชร ฝ่ายคนแคระต้องร่วมกันต่ออุโมงค์จาก <b>ทางเข้าเหมือง</b> ไปยัง <b>การ์ดเป้าหมาย</b> ที่คว่ำไว้ 3 ใบ โดยมี <b>เพชร</b> อยู่ใต้ใบเดียว อีก 2 ใบเป็น <b>หิน</b></p><p>ในหมู่ผู้เล่นจะมี <b>ฝ่ายร้าย</b> แฝงตัวอยู่และคอยขัดขวางอย่างลับ ๆ จำนวนรอบเลือกได้ตอนเริ่มเกม (1–5 รอบ) เมื่อครบทุกรอบ ใครสะสมเพชรได้มากที่สุดเป็นผู้ชนะ (ถ้าเสมอกันก็ชนะร่วมกัน)</p></div>
+ <div class="tut-page"><h3>🎭 บทบาทลับ</h3><p>ทุกรอบจะสุ่มบทบาทใหม่ และมีการ์ดบทบาทเกิน 1 ใบที่ไม่มีใครเห็น จึงอาจไม่มีฝ่ายร้ายเลยก็ได้ ฝ่ายร้ายจะไม่รู้ว่าใครเป็นพวกเดียวกัน</p>
+  <table><tr><th>ผู้เล่น</th><th>ฝ่ายร้าย</th><th>คนแคระ</th><th>การ์ดในมือ</th></tr>
+  <tr><td>3</td><td>1</td><td>3</td><td>6</td></tr><tr><td>4</td><td>1</td><td>4</td><td>6</td></tr><tr><td>5</td><td>2</td><td>4</td><td>6</td></tr><tr><td>6</td><td>2</td><td>5</td><td>5</td></tr><tr><td>7</td><td>3</td><td>5</td><td>5</td></tr><tr><td>8</td><td>3</td><td>6</td><td>4</td></tr><tr><td>9</td><td>3</td><td>7</td><td>4</td></tr><tr><td>10</td><td>4</td><td>7</td><td>4</td></tr></table></div>
+ <div class="tut-page"><h3>🔁 ในตาของคุณ</h3><p>เลือกทำ <b>1 อย่าง</b>:</p><ul><li>วางการ์ดทางเดิน 1 ใบลงในเหมือง</li><li>เล่นการ์ดแอ็กชัน 1 ใบ</li><li>ทิ้งการ์ด 1 ใบเพื่อผ่านตา</li></ul><p>จากนั้นจั่ว 1 ใบ ถ้ากองจั่วยังมี เมื่อกองหมดก็เล่นต่อโดยไม่จั่ว คนที่ไม่มีการ์ดในมือจะถูกข้าม</p></div>
+ <div class="tut-page"><h3>🛤️ การวางทางเดิน</h3><ul><li>ต้องวางติดการ์ดที่อยู่บนกระดาน</li><li>ขอบ<b>ทุกด้าน</b>ต้องตรงกับการ์ดข้างเคียง (ทางต่อทาง ผนังต่อผนัง)</li><li>ต้องมีทางต่อเนื่องจากทางเข้าเหมือง</li><li>หมุนการ์ดได้ 180° เท่านั้น</li><li>การ์ดทางตันวางได้ แต่ทางจะไม่ต่อผ่าน</li><li>ถ้าเครื่องมือของคุณพังอยู่ จะวางทางเดินไม่ได้</li></ul></div>
+ <div class="tut-page"><h3>🃏 การ์ดแอ็กชัน (27 ใบ)</h3><ul><li><b>ทำลายเครื่องมือ</b> (จอบ / ตะเกียง / รถเข็นแร่ อย่างละ 3): วางใส่ผู้เล่นคนไหนก็ได้ แต่เครื่องมือชนิดเดียวกันพังซ้ำไม่ได้</li><li><b>ซ่อมเครื่องมือ</b> (เดี่ยว 6 ใบ, คู่ 3 ใบ): ซ่อมให้ตัวเองหรือคนอื่น 1 ชิ้น การ์ดซ่อมคู่เลือกซ่อมได้อย่างเดียว</li><li><b>หินถล่ม</b> (3): ทำลายการ์ดทางเดินหรือทางตัน 1 ใบ (ใช้กับทางเข้าหรือการ์ดเป้าหมายไม่ได้)</li><li><b>แผนที่</b> (6): แอบดูการ์ดเป้าหมาย 1 ใบ เห็นคนเดียว</li></ul></div>
+ <div class="tut-page"><h3>🏁 จบรอบ</h3><ul><li>ทันทีที่ทางเชื่อมถึงการ์ดเป้าหมายใบใด การ์ดจะถูกเปิด</li><li>เป็น <b>💎 เพชร</b> → ฝ่ายคนแคระชนะ</li><li>เป็น <b>🪨 หิน</b> → ฝ่ายร้ายชนะทันที (ถ้าปิดตัวเลือกนี้ตอนตั้งค่า จะเล่นต่อตามกติกาต้นฉบับ)</li><li>ถ้าการ์ดหมดทุกมือโดยยังไม่ถึงเพชร → ฝ่ายร้ายชนะ</li></ul></div>
+ <div class="tut-page"><h3>💎 การแจกไพ่เพชร</h3><p>ไพ่เพชรมี 28 ใบ (1 เม็ด ×16, 2 เม็ด ×8, 3 เม็ด ×4)</p><p><b>ฝ่ายคนแคระชนะ:</b> จั่วไพ่เพชรเท่าจำนวนคนแคระ คนที่วางการ์ดเชื่อมถึงเพชรเลือกเก็บก่อน 1 ใบ แล้วส่งทวนเข็มให้คนแคระคนถัดไป (ข้ามฝ่ายร้าย) จนทุกคนได้คนละ 1 ใบ คนที่เครื่องมือพังก็ได้ด้วย</p><p><b>ฝ่ายร้ายชนะ:</b> ฝ่ายร้าย 1 คนได้ 4 เม็ด · 2–3 คน ได้คนละ 3 เม็ด · 4 คน ได้คนละ 2 เม็ด</p><p>ถ้าไพ่เพชรหมดระหว่างเล่นหลายรอบ จะเติมกองใหม่ให้อัตโนมัติ</p></div>
+ <div class="tut-page"><h3>🎮 วิธีควบคุม</h3><ul><li>แตะการ์ดในมือเพื่อเลือก</li><li>การ์ดทางเดิน: <span style="color:var(--ok)">ช่องเขียว</span> = วางได้ทันที, <span style="color:var(--gold)">ช่องเหลือง</span> = ต้องหมุน (เกมหมุนให้อัตโนมัติ)</li><li>แตะช่องเพื่อดูตัวอย่าง แล้วแตะซ้ำหรือกด <b>✔</b></li><li>ทำลาย/ซ่อมเครื่องมือ: แตะผู้เล่นที่มีกรอบเขียวในแถบด้านบน</li><li>หินถล่ม/แผนที่: แตะการ์ดบนกระดานที่มีกรอบเขียว</li><li>คีย์ลัด: R = หมุน, Enter = ยืนยัน, Esc = ยกเลิก</li></ul></div>
+ <div class="tutnav"><button class="btn ghost" id="tutPrev">← ก่อนหน้า</button><div class="tut-dots" id="tutDots"></div><button class="btn gem" id="tutNext">ถัดไป →</button></div>
+</div></div>
+
+<div id="toasts"></div>
+
+<script>
+(function(){
+'use strict';
+/* ================= UTIL ================= */
+const $=s=>document.querySelector(s);
+function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+const key=(x,y)=>x+','+y;
+const pk=k=>k.split(',').map(Number);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const sum=a=>a.reduce((s,x)=>s+x,0);
+const OK={ok:true};const fail=err=>({ok:false,err});
+const SK='sab7-';
+const store={get(k){try{return localStorage.getItem(SK+k);}catch(e){return null;}},set(k,v){try{localStorage.setItem(SK+k,v);}catch(e){}},del(k){try{localStorage.removeItem(SK+k);}catch(e){}}};
+const cleanName=n=>String(n||'').replace(/\s+/g,' ').trim().slice(0,16)||'คนแคระนิรนาม';
+
+/* ================= CONSTANTS / RULES ================= */
+const CW=64,CH=88;
+const DIRS=[[0,-1],[1,0],[0,1],[-1,0]];
+const OPP=d=>(d+2)%4;
+const BOUNDS={minX:-6,maxX:14,minY:-7,maxY:7};
+const inB=(x,y)=>x>=BOUNDS.minX&&x<=BOUNDS.maxX&&y>=BOUNDS.minY&&y<=BOUNDS.maxY;
+const GOAL_POS=[{x:8,y:-2},{x:8,y:0},{x:8,y:2}];
+const goalKey=i=>key(GOAL_POS[i].x,GOAL_POS[i].y);
+const GOAL_TH=['บน','กลาง','ล่าง'];
+const TOOLS=['pick','lamp','cart'];
+const TOOL_TH={pick:'จอบ',lamp:'ตะเกียง',cart:'รถเข็นแร่'};
+const TOOL_ICON={pick:'⛏️',lamp:'🔦',cart:'🛒'};
+const ROLE_TH={miner:'คนแคระ',sab:'ฝ่ายร้าย'};
+const ROLE_ICON={miner:'⛏️',sab:'😈'};
+const ROLE_TABLE={3:[1,3],4:[1,4],5:[2,4],6:[2,5],7:[3,5],8:[3,6],9:[3,7],10:[4,7]};
+const handSize=n=>n<=5?6:n<=7?5:4;
+const SAB_GOLD={1:4,2:3,3:3,4:2};
+const DWARF_NAMES=['ปู่ปราชญ์','ขี้บ่น','ยิ้มแย้ม','ง่วงงุน','ขี้อาย','ฮัดชิ่ว','เด๋อด๋า'];
+const EXTRA_NAMES=['เพชรน้อย','ไพลิน','มรกต','ทับทิม'];
+const PATH_TYPES={
+ X:{e:[1,1,1,1],c:1,n:5},T1:{e:[1,1,1,0],c:1,n:5},T2:{e:[0,1,1,1],c:1,n:5},
+ V:{e:[1,0,1,0],c:1,n:4},H:{e:[0,1,0,1],c:1,n:3},C1:{e:[0,1,1,0],c:1,n:4},C2:{e:[0,0,1,1],c:1,n:5},
+ dX:{e:[1,1,1,1],c:0,n:1},dT1:{e:[1,1,1,0],c:0,n:1},dT2:{e:[0,1,1,1],c:0,n:1},dV:{e:[1,0,1,0],c:0,n:1},
+ dH:{e:[0,1,0,1],c:0,n:1},dC1:{e:[0,1,1,0],c:0,n:1},dC2:{e:[0,0,1,1],c:0,n:1},dN:{e:[1,0,0,0],c:0,n:1},dE:{e:[0,1,0,0],c:0,n:1}
+};
+const SPECIAL={START:{e:[1,1,1,1],c:1},GOLD:{e:[1,1,1,1],c:1},STONE_A:{e:[1,0,0,1],c:1},STONE_B:{e:[0,0,1,1],c:1}};
+const specOf=k=>PATH_TYPES[k]||SPECIAL[k];
+function edgesOf(k,r){const e=specOf(k).e;return r?[e[2],e[3],e[0],e[1]]:e.slice();}
+const symmetric=k=>edgesOf(k,0).join()===edgesOf(k,1).join();
+const cellEdges=c=>c&&c.k?edgesOf(c.k,c.r):null;
+
+function buildDeck(tag){
+ const d=[];let i=0;const id=()=>tag+'c'+(i++);
+ for(const k in PATH_TYPES)for(let n=0;n<PATH_TYPES[k].n;n++)d.push({id:id(),kind:'path',k});
+ for(const t of TOOLS){for(let n=0;n<3;n++)d.push({id:id(),kind:'act',a:'break',tools:[t]});for(let n=0;n<2;n++)d.push({id:id(),kind:'act',a:'fix',tools:[t]});}
+ [['pick','lamp'],['pick','cart'],['lamp','cart']].forEach(ts=>d.push({id:id(),kind:'act',a:'fix',tools:ts}));
+ for(let n=0;n<3;n++)d.push({id:id(),kind:'act',a:'rock'});
+ for(let n=0;n<6;n++)d.push({id:id(),kind:'act',a:'map'});
+ return shuffle(d);
+}
+function buildGoldDeck(){const g=[];for(let i=0;i<16;i++)g.push(1);for(let i=0;i<8;i++)g.push(2);for(let i=0;i<4;i++)g.push(3);return shuffle(g);}
+
+/* ================= BOARD LOGIC ================= */
+function reach(board){
+ const s0=key(0,0),seen=new Set([s0]),q=[s0],goalsHit=new Set();
+ while(q.length){const ck=q.shift();const [x,y]=pk(ck);const e=cellEdges(board[ck]);if(!e)continue;
+  for(let d=0;d<4;d++){if(!e[d])continue;const nk=key(x+DIRS[d][0],y+DIRS[d][1]);const n=board[nk];if(!n)continue;
+   if(!n.k){goalsHit.add(nk);continue;}
+   if(seen.has(nk))continue;if(!specOf(n.k).c)continue;if(!cellEdges(n)[OPP(d)])continue;seen.add(nk);q.push(nk);}}
+ return {seen,goalsHit};
+}
+function canPlace(board,k,r,x,y,R){
+ if(!inB(x,y)||board[key(x,y)])return false;
+ const e=edgesOf(k,r);let link=false;
+ for(let d=0;d<4;d++){const nk=key(x+DIRS[d][0],y+DIRS[d][1]);const n=board[nk];if(!n||!n.k)continue;
+  const ne=cellEdges(n);if(!!e[d]!==!!ne[OPP(d)])return false;if(e[d]&&R.seen.has(nk))link=true;}
+ return link;
+}
+function candidateCells(board){const s=new Set();for(const k in board){const [x,y]=pk(k);for(const [dx,dy] of DIRS){const nx=x+dx,ny=y+dy,nk=key(nx,ny);if(!board[nk]&&inB(nx,ny))s.add(nk);}}return [...s];}
+function legalFor(board,k,R){R=R||reach(board);const res=[];const rots=symmetric(k)?[0]:[0,1];for(const ck of candidateCells(board)){const [x,y]=pk(ck);for(const r of rots)if(canPlace(board,k,r,x,y,R))res.push({x,y,r});}return res;}
+function frontier(board,R){const f=new Set();for(const sk of R.seen){const [x,y]=pk(sk);const e=cellEdges(board[sk]);for(let d=0;d<4;d++){if(!e[d])continue;const nx=x+DIRS[d][0],ny=y+DIRS[d][1],nk=key(nx,ny);if(inB(nx,ny)&&!board[nk])f.add(nk);}}return f;}
+function distTo(board,R,targets){
+ if(!targets.length)return 99;
+ const tset=new Set(targets.map(goalKey));
+ for(const g of R.goalsHit)if(tset.has(g))return 0;
+ const adj=new Set();for(const tk of tset){const [x,y]=pk(tk);for(const [dx,dy] of DIRS)adj.add(key(x+dx,y+dy));}
+ const dist=new Map(),q=[];for(const f of frontier(board,R)){dist.set(f,1);q.push(f);}
+ for(let qi=0;qi<q.length;qi++){const ck=q[qi],dd=dist.get(ck);if(adj.has(ck))return dd;const [x,y]=pk(ck);
+  for(const [dx,dy] of DIRS){const nx=x+dx,ny=y+dy,nk=key(nx,ny);if(!inB(nx,ny)||board[nk]||dist.has(nk))continue;dist.set(nk,dd+1);q.push(nk);}}
+ return 99;
+}
+const clampDelta=d=>clamp(d,-3,3);
+
+/* ================= ENGINE (host-authoritative) ================= */
+function addLog(S,text,cls){S.logN=(S.logN||0)+1;S.log.push({n:S.logN,text,cls:cls||''});if(S.log.length>90)S.log.shift();}
+function newGame(defs,mode,opts){
+ opts=opts||{};
+ const S={gameId:Math.random().toString(36).slice(2,8),mode,opts:{rounds:clamp((opts.rounds|0)||3,1,5),stoneEnds:opts.stoneEnds!==false},
+  round:0,seq:0,log:[],hostSeat:0,lastActor:null,firstPlayer:Math.floor(Math.random()*defs.length),goldDeck:buildGoldDeck(),
+  players:defs.map(p=>({name:p.name,isBot:!!p.isBot,token:p.token||null,online:true,gold:[],role:null,hand:[],broken:{pick:0,lamp:0,cart:0},known:{},lastPeek:null,peekN:0}))};
+ startRound(S);return S;
+}
+function startRound(S){
+ S.round++;const n=S.players.length;const [ns,nm]=ROLE_TABLE[n];
+ const dwarfs=shuffle([...Array(ns).fill('sab'),...Array(nm).fill('miner')]);
+ S.players.forEach((p,i)=>{p.role=dwarfs[i];p.hand=[];p.broken={pick:0,lamp:0,cart:0};p.known={};p.lastPeek=null;});
+ S.leftover=dwarfs[n];
+ const types=shuffle(['GOLD','STONE_A','STONE_B']);
+ S.goals=GOAL_POS.map((g,i)=>({x:g.x,y:g.y,type:types[i],revealed:false}));
+ S.board={};S.board[key(0,0)]={k:'START',r:0,id:'start'};
+ GOAL_POS.forEach((g,i)=>{S.board[key(g.x,g.y)]={goal:i,k:null,r:0,id:'goal'+i};});
+ S.deck=buildDeck(S.gameId+'r'+S.round);
+ const hs=handSize(n);for(let r=0;r<hs;r++)S.players.forEach(p=>p.hand.push(S.deck.pop()));
+ S.discard=0;S.history=[];S.result=null;S.draft=null;S.phase='play';
+ S.turn=S.round===1?S.firstPlayer:((S.lastActor==null?-1:S.lastActor)+1)%n;
+ S.turnStart=Date.now();S.lastMove={seq:++S.seq,t:'round'};
+ addLog(S,`— เริ่มรอบที่ ${S.round}/${S.opts.rounds} — ${S.players[S.turn].name} เริ่มก่อน`,'sys');
+}
+const isBroken=P=>TOOLS.some(t=>P.broken[t]);
+function revealGoal(S,gk){
+ const c=S.board[gk],g=S.goals[c.goal],[gx,gy]=pk(gk),R=reach(S.board);
+ const fromDirs=[];
+ for(let d=0;d<4;d++){const nk=key(gx+DIRS[d][0],gy+DIRS[d][1]);const n=S.board[nk];if(n&&n.k&&R.seen.has(nk)&&cellEdges(n)[OPP(d)])fromDirs.push(d);}
+ let best=0,bs=-1;
+ for(const r of [0,1]){const e=edgesOf(g.type,r);let sc=0;for(const d of fromDirs)if(e[d])sc+=10;
+  for(let d=0;d<4;d++){const n=S.board[key(gx+DIRS[d][0],gy+DIRS[d][1])];if(n&&n.k&&!!e[d]===!!cellEdges(n)[OPP(d)])sc+=1;}
+  if(sc>bs){bs=sc;best=r;}}
+ c.k=g.type;c.r=best;g.revealed=true;return c.goal;
+}
+function checkReveals(S){const out=[];let changed=true;while(changed){changed=false;const R=reach(S.board);for(const gk of R.goalsHit){if(S.board[gk].k)continue;out.push(revealGoal(S,gk));changed=true;}}return out;}
+
+function applyAction(S,seat,a){
+ if(!a||typeof a!=='object')return fail('คำสั่งไม่ถูกต้อง');
+ if(a.type==='nextRound'){
+  if(seat!==S.hostSeat)return fail('เฉพาะโฮสต์เท่านั้นที่เริ่มรอบถัดไปได้');
+  if(S.phase!=='roundEnd')return fail('รอบนี้ยังไม่จบ');
+  if(S.round>=S.opts.rounds){S.phase='gameEnd';S.lastMove={seq:++S.seq,t:'gameEnd'};addLog(S,'🏁 จบเกมแล้ว!','sys');}
+  else startRound(S);
+  return OK;
+ }
+ if(a.type==='draft'){
+  if(S.phase!=='gold'||!S.draft)return fail('ตอนนี้ไม่ใช่ช่วงแจกไพ่เพชร');
+  if(S.draft.picker!==seat)return fail('ยังไม่ถึงคิวเลือกเพชรของคุณ');
+  const i=a.idx|0;if(i<0||i>=S.draft.offer.length)return fail('ไพ่เพชรไม่ถูกต้อง');
+  giveGold(S,seat,S.draft.offer.splice(i,1)[0]);S.draft.pos++;processDraft(S);S.lastMove={seq:++S.seq,t:'draft',p:seat};return OK;
+ }
+ if(S.phase!=='play')return fail('ตอนนี้ยังเล่นการ์ดไม่ได้');
+ if(S.turn!==seat)return fail('ยังไม่ถึงตาของคุณ');
+ const P=S.players[seat];const ci=P.hand.findIndex(c=>c.id===a.cardId);
+ if(ci<0)return fail('ไม่พบการ์ดใบนี้ในมือ');
+ const card=P.hand[ci],nm=P.name;
+ const fdIdx=()=>S.goals.map((g,i)=>g.revealed?-1:i).filter(i=>i>=0);
+ let lm={t:a.type,p:seat};
+ if(a.type==='path'){
+  if(card.kind!=='path')return fail('การ์ดนี้ไม่ใช่การ์ดทางเดิน');
+  if(isBroken(P))return fail('เครื่องมือของคุณพังอยู่ จึงวางการ์ดทางเดินไม่ได้');
+  const x=a.x|0,y=a.y|0,r=a.rot?1:0;const R=reach(S.board);
+  if(!canPlace(S.board,card.k,r,x,y,R))return fail('วางตรงนี้ไม่ได้: ทุกด้านต้องต่อกันพอดี และต้องเชื่อมถึงทางเข้าเหมือง');
+  const fd=fdIdx(),before=distTo(S.board,R,fd);
+  P.hand.splice(ci,1);S.board[key(x,y)]={k:card.k,r,id:card.id,own:seat};
+  const after=distTo(S.board,reach(S.board),fd);const dead=!specOf(card.k).c;
+  S.history.push({t:'path',p:seat,dead,delta:clampDelta(before-after)});
+  addLog(S,`${nm} วาง${dead?'การ์ดทางตัน':'การ์ดทางเดิน'}`);
+  const rev=checkReveals(S);let gold=false,stone=false;
+  for(const gi of rev){if(S.goals[gi].type==='GOLD'){gold=true;addLog(S,`💎 ${nm} ขุดถึงเพชรที่เป้าหมาย${GOAL_TH[gi]}!`,'gold');}else{stone=true;addLog(S,`🪨 เป้าหมาย${GOAL_TH[gi]}เป็นหิน`,'sys');}}
+  lm={t:'path',p:seat,x,y,reveal:rev,gold};
+  if(gold||(stone&&S.opts.stoneEnds)){S.lastActor=seat;S.lastMove=Object.assign(lm,{seq:++S.seq});endRound(S,gold?'miners':'sabs',seat,gold?'gold':'stone');return OK;}
+ }else if(a.type==='break'){
+  if(card.a!=='break')return fail('การ์ดนี้ไม่ใช่การ์ดทำลายเครื่องมือ');
+  const t=a.target|0,T=S.players[t];if(!T)return fail('ไม่พบผู้เล่นเป้าหมาย');
+  const tool=card.tools[0];if(T.broken[tool])return fail(`${T.name} มี${TOOL_TH[tool]}พังอยู่แล้ว`);
+  P.hand.splice(ci,1);T.broken[tool]=1;
+  S.history.push({t:'break',p:seat,target:t,tool});addLog(S,`${nm} ทำ${TOOL_TH[tool]}ของ ${t===seat?'ตัวเอง':T.name} พัง ${TOOL_ICON[tool]}`,'bad');
+  lm={t:'break',p:seat,target:t,tool};
+ }else if(a.type==='fix'){
+  if(card.a!=='fix')return fail('การ์ดนี้ไม่ใช่การ์ดซ่อมเครื่องมือ');
+  const t=a.target|0,T=S.players[t];if(!T)return fail('ไม่พบผู้เล่นเป้าหมาย');
+  let tool=a.tool;if(tool==null)tool=card.tools.find(x=>T.broken[x]);
+  if(!tool||!card.tools.includes(tool))return fail('การ์ดนี้ซ่อมเครื่องมือชนิดนั้นไม่ได้');
+  if(!T.broken[tool])return fail(`${T.name} ไม่มี${TOOL_TH[tool]}ที่พัง`);
+  P.hand.splice(ci,1);T.broken[tool]=0;S.discard+=2;
+  S.history.push({t:'fix',p:seat,target:t,tool});addLog(S,`${nm} ซ่อม${TOOL_TH[tool]}ให้${t===seat?'ตัวเอง':' '+T.name} 🔧`);
+  lm={t:'fix',p:seat,target:t,tool};
+ }else if(a.type==='rock'){
+  if(card.a!=='rock')return fail('การ์ดนี้ไม่ใช่การ์ดหินถล่ม');
+  const k=key(a.x|0,a.y|0),c=S.board[k];
+  if(!c)return fail('ไม่มีการ์ดในช่องนั้น');
+  if(c.goal!=null||c.k==='START')return fail('หินถล่มใช้กับทางเข้าเหมืองหรือการ์ดเป้าหมายไม่ได้');
+  const fd=fdIdx(),before=distTo(S.board,reach(S.board),fd);
+  P.hand.splice(ci,1);delete S.board[k];S.discard+=2;
+  const after=distTo(S.board,reach(S.board),fd);
+  S.history.push({t:'rock',p:seat,delta:clampDelta(before-after),dead:!specOf(c.k).c});
+  addLog(S,`${nm} ใช้หินถล่มทำลาย${specOf(c.k).c?'ทางเดิน':'ทางตัน'} 1 ใบ 🪨`);
+  lm={t:'rock',p:seat,x:a.x|0,y:a.y|0};
+ }else if(a.type==='map'){
+  if(card.a!=='map')return fail('การ์ดนี้ไม่ใช่การ์ดแผนที่');
+  const g=a.goal|0;if(!S.goals[g])return fail('ไม่พบการ์ดเป้าหมาย');
+  if(S.goals[g].revealed)return fail('การ์ดเป้าหมายใบนี้เปิดแล้ว');
+  P.hand.splice(ci,1);S.discard++;P.known[g]=S.goals[g].type;P.peekN++;
+  P.lastPeek={id:S.gameId+'-'+S.round+'-'+P.peekN,goal:g,type:S.goals[g].type};
+  S.history.push({t:'map',p:seat,goal:g});addLog(S,`${nm} ใช้แผนที่แอบดูเป้าหมาย${GOAL_TH[g]} 🗺️`);
+  lm={t:'map',p:seat,goal:g};
+ }else if(a.type==='discard'){
+  P.hand.splice(ci,1);S.discard++;S.history.push({t:'discard',p:seat});addLog(S,`${nm} ทิ้งการ์ด 1 ใบ (ผ่าน)`);
+ }else return fail('ไม่รู้จักคำสั่งนี้');
+ if(S.deck.length)P.hand.push(S.deck.pop());
+ S.lastActor=seat;S.lastMove=Object.assign(lm,{seq:++S.seq});
+ advanceTurn(S);return OK;
+}
+function advanceTurn(S){
+ const n=S.players.length;
+ if(S.players.every(p=>!p.hand.length)){addLog(S,'การ์ดหมดทุกมือแล้ว แต่ยังไม่มีใครขุดถึงเพชร','sys');endRound(S,'sabs',null,'empty');return;}
+ let t=S.turn;for(let i=1;i<=n;i++){t=(S.turn+i)%n;if(S.players[t].hand.length)break;}
+ S.turn=t;S.turnStart=Date.now();
+}
+function giveGold(S,seat,v){S.players[seat].gold.push(v);if(S.result)S.result.payouts[seat].push(v);}
+function takeMax(arr){let bi=0;arr.forEach((v,i)=>{if(v>arr[bi])bi=i;});return arr.splice(bi,1)[0];}
+function ensureGold(S,n){if(S.goldDeck.length<n){S.goldDeck=S.goldDeck.concat(buildGoldDeck());addLog(S,'💎 กองไพ่เพชรใกล้หมด เติมกองใหม่แล้ว','sys');}}
+function payNuggets(S,seat,amount){
+ let rem=amount;
+ while(rem>0&&S.goldDeck.length){let idx=-1;for(const v of [3,2,1]){if(v<=rem){idx=S.goldDeck.indexOf(v);if(idx>=0)break;}}if(idx<0)break;const v=S.goldDeck.splice(idx,1)[0];giveGold(S,seat,v);rem-=v;}
+ if(rem>0)giveGold(S,seat,rem);
+}
+function endRound(S,winner,reacher,reason){
+ const n=S.players.length;
+ S.result={winner,reacher,reason,round:S.round,payouts:S.players.map(()=>[])};
+ if(winner==='miners'){
+  const miners=S.players.map((p,i)=>p.role==='miner'?i:-1).filter(i=>i>=0);
+  ensureGold(S,miners.length);
+  const offer=[];for(let i=0;i<miners.length;i++)offer.push(S.goldDeck.pop());
+  const order=[];for(let i=0;i<n;i++){const s=((reacher-i)%n+n)%n;if(S.players[s].role==='miner')order.push(s);}
+  S.draft={order,pos:0,offer,picker:order[0]};S.draftStart=Date.now();
+  addLog(S,`⛏️ ฝ่ายคนแคระชนะ! จั่วไพ่เพชร ${offer.length} ใบ แจกคนแคระคนละ 1 ใบ`,'gold');processDraft(S);
+ }else{
+  if(reason==='stone')addLog(S,'🪨 ขุดเจอหิน! ฝ่ายร้ายชนะรอบนี้','bad');
+  const sabs=S.players.map((p,i)=>p.role==='sab'?i:-1).filter(i=>i>=0);
+  if(sabs.length){ensureGold(S,12);const amt=SAB_GOLD[sabs.length];sabs.forEach(i=>payNuggets(S,i,amt));addLog(S,`😈 ฝ่ายร้ายชนะ! ได้เพชรคนละ ${amt} เม็ด`,'bad');}
+  else addLog(S,'รอบนี้ไม่มีฝ่ายร้ายในเกม จึงไม่มีใครได้เพชร','sys');
+  S.phase='roundEnd';
+ }
+}
+function processDraft(S){
+ const D=S.draft;
+ while(D.offer.length&&D.order.length){
+  const p=D.order[D.pos%D.order.length];D.picker=p;
+  if(D.offer.length===1){giveGold(S,p,D.offer.pop());D.pos++;continue;}
+  if(S.players[p].isBot){giveGold(S,p,takeMax(D.offer));D.pos++;continue;}
+  S.phase='gold';S.draftStart=Date.now();return;
+ }
+ D.picker=null;S.phase='roundEnd';
+}
+function viewFor(S,seat){
+ const end=S.phase==='roundEnd'||S.phase==='gameEnd'||S.phase==='gold',fin=S.phase==='gameEnd',me=S.players[seat];
+ return {
+  gameId:S.gameId,round:S.round,opts:Object.assign({},S.opts),phase:S.phase,turn:S.turn,deckCount:S.deck.length,discard:S.discard,hostSeat:S.hostSeat,mode:S.mode,
+  players:S.players.map((p,i)=>({name:p.name,isBot:p.isBot,online:p.online!==false,handCount:p.hand.length,broken:Object.assign({},p.broken),
+   role:(i===seat||end)?p.role:null,goldTotal:(i===seat||fin)?sum(p.gold):null,goldCards:p.gold.length})),
+  board:JSON.parse(JSON.stringify(S.board)),
+  goals:S.goals.map(g=>({x:g.x,y:g.y,revealed:g.revealed,type:(g.revealed||end)?g.type:null})),
+  me:me?{seat,role:me.role,hand:me.hand.map(c=>Object.assign({},c)),known:Object.assign({},me.known),lastPeek:me.lastPeek,gold:me.gold.slice()}:null,
+  log:S.log.slice(-60),history:S.history.slice(),
+  result:S.result?{winner:S.result.winner,reacher:S.result.reacher,reason:S.result.reason,round:S.result.round,
+   rows:S.players.map((p,i)=>{const v=S.result.payouts[i];const show=i===seat||p.role==='sab'||fin;return {count:v.length,total:show?sum(v):null};})}:null,
+  draft:(S.draft&&S.phase==='gold')?{picker:S.draft.picker,offer:S.draft.picker===seat?S.draft.offer.slice():null,offerCount:S.draft.offer.length}:null,
+  leftover:end?S.leftover:null,lastMove:S.lastMove,seq:S.seq
+ };
+}
+
+/* ================= BOT AI (sees only its own view) ================= */
+function computeSusp(v,seat,role){
+ const s=v.players.map(()=>0);
+ for(const h of v.history){const p=h.p;if(p===seat)continue;
+  if(h.t==='path'){if(h.delta>0)s[p]-=1.2*h.delta;else if(h.delta<0)s[p]+=(h.dead?3:1.6)*(-h.delta);else if(h.dead)s[p]+=0.8;}
+  else if(h.t==='break'){if(h.target===seat)s[p]+=role==='miner'?2.5:-1.5;else if(h.target!==p)s[p]+=s[h.target]<=0?1.2:-1;}
+  else if(h.t==='fix'){if(h.target===seat)s[p]+=role==='miner'?-1.5:0.5;else if(h.target!==p)s[p]+=s[h.target]>1.5?1.2:-0.6;}
+  else if(h.t==='rock'){s[p]+=h.delta<0?2.2:h.delta>0?-1.2:0;}}
+ return s;
+}
+function botDecide(v){
+ const me=v.me,seat=me.seat,role=me.role,B=v.board,P=v.players,hand=me.hand,stoneEnds=!!(v.opts&&v.opts.stoneEnds);
+ const susp=computeSusp(v,seat,role);
+ const fd=[0,1,2].filter(i=>!v.goals[i].revealed);
+ let goldIdx=null;const knownStone=[];
+ for(const i of fd){if(me.known[i]==='GOLD')goldIdx=i;else if(me.known[i])knownStone.push(i);}
+ const unk=fd.filter(i=>!me.known[i]);
+ if(goldIdx==null&&unk.length===1)goldIdx=unk[0];
+ const targets=goldIdx!=null?[goldIdx]:unk;
+ const R=reach(B),base=distTo(B,R,targets),fr0=frontier(B,R).size;
+ const broken=TOOLS.some(t=>P[seat].broken[t]);
+ const urgency=base<=2?2:base<=4?1.4:1;
+ const late=v.deckCount===0;
+ const hitScore=hits=>{
+  let p;if(goldIdx!=null)p=hits.includes(goldIdx)?1:0;else{const hu=hits.filter(i=>unk.includes(i)).length;p=unk.length?hu/unk.length:0;}
+  if(stoneEnds){const val=p*100-(1-p)*100;return role==='miner'?val+(late&&p>0?60:0):-val;}
+  return role==='miner'?p*100+(1-p)*4:-p*120+(1-p)*2;
+ };
+ const cands=[];const add=(score,a)=>cands.push({score:score+Math.random()*0.8,a});
+ for(const c of hand){
+  if(c.kind==='path'){
+   if(broken)continue;const dead=!specOf(c.k).c;
+   for(const m of legalFor(B,c.k,R)){
+    const B2=Object.assign({},B);B2[key(m.x,m.y)]={k:c.k,r:m.r};const R2=reach(B2);
+    const act={type:'path',cardId:c.id,x:m.x,y:m.y,rot:m.r};
+    if(R2.goalsHit.size){const hits=[...R2.goalsHit].map(k=>B[k].goal);add(hitScore(hits),act);continue;}
+    const d2=distTo(B2,R2,targets);const fr2=frontier(B2,R2).size;let s;
+    if(role==='miner'){s=(base-d2)*10+(fr2-fr0)*0.3+(dead?-6:0)+m.x*0.05;}
+    else{
+     s=(d2-base)*10*urgency+(fr0-fr2)*1.2+(dead?2:0);
+     if(knownStone.length&&d2>=base){s+=(distTo(B,R,knownStone)-distTo(B2,R2,knownStone))*(stoneEnds?6:2.5);}
+     if(d2<base)s-=6;
+     if(v.deckCount>25&&d2===base&&!dead)s+=1;
+    }
+    add(s,act);
+   }
+  }else if(c.a==='break'){
+   const tool=c.tools[0];
+   P.forEach((T,i)=>{if(i===seat||T.broken[tool]||T.handCount===0)return;
+    let s;if(role==='miner')s=susp[i]>1.5?4+susp[i]*1.5:-4;
+    else s=susp[i]<1?5+Math.max(0,-susp[i])*1.2+(urgency-1)*5+(TOOLS.some(t=>T.broken[t])?-2:0):-3;
+    add(s,{type:'break',cardId:c.id,target:i,tool});});
+  }else if(c.a==='fix'){
+   P.forEach((T,i)=>{const opts=c.tools.filter(t=>T.broken[t]);if(!opts.length)return;
+    let s;if(i===seat)s=role==='miner'?13:9;else if(role==='miner')s=susp[i]<1?6-susp[i]:-4;else s=susp[i]>2?3:-4;
+    add(s,{type:'fix',cardId:c.id,target:i,tool:opts[0]});});
+  }else if(c.a==='rock'){
+   for(const k in B){const cc=B[k];if(cc.goal!=null||cc.k==='START')continue;
+    const B2=Object.assign({},B);delete B2[k];const d2=distTo(B2,reach(B2),targets);const dead=!specOf(cc.k).c;
+    const s=role==='miner'?(base-d2)*10+(dead?2:-3)-2:(d2-base)*9*urgency-2+(dead?-4:0);
+    const [x,y]=pk(k);add(s,{type:'rock',cardId:c.id,x,y});}
+  }else if(c.a==='map'){
+   if(goldIdx==null&&unk.length){let g=unk[0],bd=999;for(const i of unk){const d=distTo(B,R,[i]);if(d<bd){bd=d;g=i;}}
+    const sc=role==='miner'?(stoneEnds?(base<=3?18:11):9):(stoneEnds?8:6);
+    add(sc,{type:'map',cardId:c.id,goal:g});}
+  }
+ }
+ cands.sort((a,b)=>b.score-a.score);
+ if(cands.length&&cands[0].score>0.5)return cands[0].a;
+ const keep=c=>{const best=Math.max(-10,...cands.filter(x=>x.a.cardId===c.id).map(x=>x.score));
+  let k;if(c.kind==='path')k=specOf(c.k).c?(role==='miner'?3:0):(role==='miner'?-2:3);
+  else k={break:role==='miner'?1:3,fix:role==='miner'?4:1,rock:role==='miner'?1:3,map:role==='miner'?4:2}[c.a];return best+k;};
+ let worst=hand[0];for(const c of hand)if(keep(c)<keep(worst))worst=c;
+ return {type:'discard',cardId:worst.id};
+}
+
+/* ================= SVG ART ================= */
+const DWARF=[['#e53935','#f5f5f5'],['#fb8c00','#d7ccc8'],['#fdd835','#8d6e63'],['#43a047','#eeeeee'],['#1e88e5','#bcaaa4'],['#5e35b1','#fafafa'],['#8e24aa','#a1887f'],['#00acc1','#e0e0e0'],['#d81b60','#6d4c41'],['#7cb342','#cfd8dc']];
+function dwarfSVG(i,attrs){const [h,b]=DWARF[i%DWARF.length];
+ return `<svg viewBox="0 0 64 64" ${attrs||''}><circle cx="32" cy="32" r="31" fill="#1a1440"/><circle cx="32" cy="32" r="30" fill="none" stroke="${h}" stroke-opacity=".5" stroke-width="2"/><ellipse cx="32" cy="35" rx="15" ry="15" fill="#f3c9a2"/><path d="M15 31 Q18 4 40 6 Q34 14 49 31 Z" fill="${h}"/><rect x="12" y="28" width="40" height="6" rx="3" fill="${h}" stroke="rgba(0,0,0,.3)"/><circle cx="40" cy="7" r="3" fill="#fff"/><circle cx="26" cy="37" r="2" fill="#2b1a10"/><circle cx="38" cy="37" r="2" fill="#2b1a10"/><path d="M17 40 Q16 60 32 61 Q48 60 47 40 Q40 47 32 45 Q24 47 17 40Z" fill="${b}"/><ellipse cx="32" cy="42" rx="4.5" ry="3.5" fill="#e8a07c"/><path d="M27 50 Q32 53 37 50" stroke="rgba(0,0,0,.25)" fill="none" stroke-width="1.5"/></svg>`;}
+function gem(cx,cy,s){const P=(x,y)=>(cx+x*s).toFixed(1)+','+(cy+y*s).toFixed(1);const w=v=>Math.max(.8,s*v).toFixed(2);
+ return `<g><polygon points="${P(-1,-.3)} ${P(-.55,-.85)} ${P(.55,-.85)} ${P(1,-.3)} ${P(0,1)}" fill="url(#gDia)" stroke="#effdff" stroke-width="${w(.06)}" stroke-linejoin="round"/><polyline points="${P(-1,-.3)} ${P(1,-.3)}" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="${w(.04)}"/><polyline points="${P(-.55,-.85)} ${P(-.3,-.3)} ${P(0,1)} ${P(.3,-.3)} ${P(.55,-.85)}" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="${w(.035)}"/><polyline points="${P(-.3,-.3)} ${P(0,-.85)} ${P(.3,-.3)}" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="${w(.03)}"/></g>`;}
+const CRYS=`<path d="M8 130 l5 -13 l5 13z" fill="#7fe9ff" opacity=".55"/><path d="M15 131 l3 -8 l3 8z" fill="#b48cff" opacity=".6"/><path d="M82 21 l4 -11 l4 11z" fill="#ff9ad5" opacity=".45"/>`;
+function pathSVG(k,r,dim){
+ const sp=specOf(k),e=edgesOf(k,r),c=sp.c;
+ const F={0:[35,0,30,85],1:[35,55,65,30],2:[35,55,30,85],3:[0,55,65,30]};
+ const Pt={0:[35,0,30,34],1:[66,55,34,30],2:[35,106,30,34],3:[0,55,34,30]};
+ const ends={0:[50,36],1:[64,70],2:[50,104],3:[36,70]};
+ let s=`<svg viewBox="0 0 100 140" preserveAspectRatio="none"><rect x="1" y="1" width="98" height="138" rx="8" fill="url(#gRock)"/><rect x="1" y="1" width="98" height="138" rx="8" fill="url(#pRock)" opacity=".6"/>`+CRYS;
+ const RR=c?F:Pt;let shapes='';
+ for(let d=0;d<4;d++)if(e[d]){const [x,y,w,h]=RR[d];shapes+=`<rect x="${x}" y="${y}" width="${w}" height="${h}"/>`;}
+ s+=`<g fill="#0c0920" stroke="#0c0920" stroke-width="7" stroke-linejoin="round">${shapes}</g><g fill="url(#gDirt)">${shapes}</g>`;
+ if(c){let rails='';const L={0:[[43,70,43,0],[57,70,57,0]],1:[[50,63,100,63],[50,77,100,77]],2:[[43,70,43,140],[57,70,57,140]],3:[[0,63,50,63],[0,77,50,77]]};
+  for(let d=0;d<4;d++)if(e[d])for(const [a,b,cc,dd] of L[d])rails+=`<line x1="${a}" y1="${b}" x2="${cc}" y2="${dd}"/>`;
+  s+=`<g stroke="#7a5a3b" stroke-width="2.2" opacity=".75">${rails}</g>`;}
+ else{for(let d=0;d<4;d++)if(e[d]){const [x,y]=ends[d];s+=`<circle cx="${x}" cy="${y}" r="10" fill="#6f6a86" stroke="#1d1a30" stroke-width="2"/><circle cx="${x-3}" cy="${y-3}" r="3" fill="#a29cc0"/>`;}
+  s+=`<circle cx="50" cy="70" r="7" fill="#3f3a5c"/><circle cx="44" cy="76" r="4" fill="#4f4970"/>`;}
+ if(k==='START')s+=`<circle cx="50" cy="70" r="28" fill="url(#gGlow)"/><g stroke="#7a4a1c" stroke-width="4"><line x1="40" y1="48" x2="40" y2="92"/><line x1="60" y1="48" x2="60" y2="92"/></g><g stroke="#b07a3a" stroke-width="3"><line x1="40" y1="56" x2="60" y2="56"/><line x1="40" y1="66" x2="60" y2="66"/><line x1="40" y1="76" x2="60" y2="76"/><line x1="40" y1="86" x2="60" y2="86"/></g><text x="50" y="132" text-anchor="middle" font-size="13" fill="#ffe39a" font-family="Kanit">ทางเข้า</text>`;
+ if(k==='GOLD')s+=`<circle cx="50" cy="68" r="38" fill="url(#gGemGlow)"/>`+gem(50,66,26)+`<text x="50" y="132" text-anchor="middle" font-size="13" fill="#d9fbff" font-family="Kanit">เพชร</text>`;
+ if(k==='STONE_A'||k==='STONE_B')s+=`<circle cx="44" cy="74" r="12" fill="#7d7890" stroke="#1d1a30" stroke-width="2"/><circle cx="58" cy="66" r="9" fill="#9893ad" stroke="#1d1a30" stroke-width="2"/><text x="50" y="132" text-anchor="middle" font-size="13" fill="#ddd" font-family="Kanit">หิน</text>`;
+ if(dim)s+=`<rect x="1" y="1" width="98" height="138" rx="8" fill="#000" opacity=".35"/>`;
+ return s+`<rect x="1" y="1" width="98" height="138" rx="8" fill="none" stroke="#000" stroke-opacity=".6" stroke-width="2"/></svg>`;
+}
+function goalBackSVG(known){
+ let s=`<svg viewBox="0 0 100 140" preserveAspectRatio="none"><rect x="1" y="1" width="98" height="138" rx="8" fill="url(#gBack)" stroke="#7fe9ff" stroke-width="3"/><rect x="8" y="8" width="84" height="124" rx="5" fill="none" stroke="rgba(127,233,255,.4)" stroke-width="1.5" stroke-dasharray="4 3"/><polygon points="26,58 38,42 62,42 74,58 50,96" fill="none" stroke="#7fe9ff" stroke-width="3" stroke-linejoin="round"/><text x="50" y="74" text-anchor="middle" font-size="26" font-weight="800" fill="#d9fbff" font-family="Kanit">?</text><text x="50" y="118" text-anchor="middle" font-size="12" fill="#bfefff" font-family="Kanit">เป้าหมาย</text>`;
+ if(known){const g=known==='GOLD';s+=`<rect x="12" y="12" width="76" height="22" rx="6" fill="${g?'#7fe9ff':'#8a8a9a'}"/><text x="50" y="28" text-anchor="middle" font-size="13" font-weight="700" fill="#0b1030" font-family="Kanit">${g?'เพชร!':'หิน'}</text>`;}
+ return s+'</svg>';
+}
+function actionSVG(c){
+ let s=`<svg viewBox="0 0 100 140" preserveAspectRatio="none"><rect x="1.5" y="1.5" width="97" height="137" rx="8" fill="url(#gAct)" stroke="#b48cff" stroke-width="3"/><rect x="7" y="7" width="86" height="126" rx="6" fill="none" stroke="rgba(200,180,255,.35)"/>`;
+ const T=(x,y,size,t)=>`<text x="${x}" y="${y}" text-anchor="middle" font-size="${size}">${t}</text>`;
+ let title='';
+ if(c.a==='break'){s+=T(50,80,42,TOOL_ICON[c.tools[0]])+`<circle cx="50" cy="66" r="31" fill="none" stroke="#ff4d6d" stroke-width="6"/><line x1="28" y1="88" x2="72" y2="44" stroke="#ff4d6d" stroke-width="6"/>`;title='พัง: '+TOOL_TH[c.tools[0]];}
+ else if(c.a==='fix'){s+=`<circle cx="50" cy="66" r="31" fill="rgba(95,227,161,.12)" stroke="#5fe3a1" stroke-width="4"/>`;
+  if(c.tools.length===1)s+=T(50,80,40,TOOL_ICON[c.tools[0]]);else s+=T(36,76,28,TOOL_ICON[c.tools[0]])+T(64,76,28,TOOL_ICON[c.tools[1]])+`<text x="50" y="94" text-anchor="middle" font-size="11" fill="#5fe3a1" font-family="Kanit">หรือ</text>`;
+  s+=T(80,30,16,'🔧');title='ซ่อม';}
+ else if(c.a==='rock'){s+=`<g stroke="#b48cff" stroke-width="2" opacity=".6"><line x1="30" y1="22" x2="34" y2="40"/><line x1="70" y1="20" x2="66" y2="40"/></g>`+T(50,84,46,'🪨');title='หินถล่ม';}
+ else if(c.a==='map'){s+=T(50,84,46,'🗺️');title='แผนที่';}
+ return s+`<text x="50" y="124" text-anchor="middle" font-size="13" fill="#eae2ff" font-family="Kanit">${title}</text></svg>`;
+}
+const cardSVG=c=>c.kind==='path'?pathSVG(c.k,0):actionSVG(c);
+function cardLabel(c){if(c.kind==='path')return specOf(c.k).c?'การ์ดทางเดิน':'การ์ดทางตัน';if(c.a==='break')return 'ทำลาย'+TOOL_TH[c.tools[0]];if(c.a==='fix')return 'ซ่อม '+c.tools.map(t=>TOOL_TH[t]).join('/');return c.a==='rock'?'หินถล่ม':'แผนที่';}
+function gemCardSVG(val){const pos={1:[[50,62,22]],2:[[36,54,16],[64,74,16]],3:[[32,52,14],[68,52,14],[50,80,14]]}[val]||[[50,62,22]];
+ let s=`<svg viewBox="0 0 100 140" width="100" height="140"><rect x="2" y="2" width="96" height="136" rx="9" fill="#151140" stroke="#7fe9ff" stroke-width="3"/><circle cx="50" cy="66" r="40" fill="url(#gGemGlow)" opacity=".5"/>`;
+ for(const [x,y,z] of pos)s+=gem(x,y,z);
+ return s+`<text x="50" y="124" text-anchor="middle" font-size="15" fill="#d9fbff" font-family="Kanit">${val} เม็ด</text></svg>`;}
+const gemBackSVG=()=>`<svg viewBox="0 0 100 140" width="100" height="140"><rect x="2" y="2" width="96" height="136" rx="9" fill="#120e34" stroke="#4fa8f0" stroke-width="3"/><polygon points="28,62 40,46 60,46 72,62 50,98" fill="none" stroke="#7fe9ff" stroke-width="3"/><text x="50" y="78" text-anchor="middle" font-size="24" fill="#d9fbff" font-family="Kanit">?</text></svg>`;
+function tileSVG(c,v){if(c.k)return pathSVG(c.k,c.r);const t=v.goals[c.goal]&&v.goals[c.goal].type;if(t)return pathSVG(t,0,true);return goalBackSVG(v.me&&v.me.known?v.me.known[c.goal]:null);}
+
+/* ================= SOUND (Web Audio, generated) ================= */
+const Sound={ctx:null,master:null,sfxOn:true,musicOn:false,music:null,
+ ensure(){try{if(!this.ctx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return false;this.ctx=new AC();this.master=this.ctx.createGain();this.master.gain.value=.9;this.master.connect(this.ctx.destination);}if(this.ctx.state==='suspended')this.ctx.resume();return true;}catch(e){return false;}},
+ tone(f,d,o){o=o||{};const c=this.ctx,t=c.currentTime+(o.at||0),os=c.createOscillator(),g=c.createGain();os.type=o.type||'sine';os.frequency.setValueAtTime(f,t);if(o.to)os.frequency.exponentialRampToValueAtTime(o.to,t+d);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(o.vol||.15,t+.012);g.gain.exponentialRampToValueAtTime(.0001,t+d);os.connect(g);g.connect(o.dest||this.master);os.start(t);os.stop(t+d+.05);},
+ noise(d,o){o=o||{};const c=this.ctx,t=c.currentTime+(o.at||0),len=Math.max(1,Math.floor(c.sampleRate*d)),b=c.createBuffer(1,len,c.sampleRate),ch=b.getChannelData(0);for(let i=0;i<len;i++)ch[i]=(Math.random()*2-1)*(1-i/len);const s=c.createBufferSource();s.buffer=b;const fl=c.createBiquadFilter();fl.type=o.type||'lowpass';fl.frequency.value=o.f||800;const g=c.createGain();g.gain.value=o.vol||.2;s.connect(fl);fl.connect(g);g.connect(this.master);s.start(t);},
+ play(n){if(!this.sfxOn||!this.ensure())return;try{switch(n){
+  case 'place':this.noise(.12,{vol:.35,f:500});this.tone(110,.15,{type:'triangle',vol:.15,to:70});break;
+  case 'flip':this.noise(.2,{vol:.15,f:2500,type:'highpass'});this.tone(300,.25,{to:600,vol:.08});break;
+  case 'gem':[1047,1319,1568,2093,2637].forEach((f,i)=>this.tone(f,.5,{type:'sine',vol:.09,at:i*.07}));break;
+  case 'break':this.tone(1400,.15,{type:'square',vol:.05});this.tone(900,.25,{type:'square',vol:.05,at:.05,to:300});this.noise(.1,{vol:.2,f:3000,type:'highpass'});break;
+  case 'fix':this.tone(523,.15,{type:'triangle',vol:.12});this.tone(784,.25,{type:'triangle',vol:.12,at:.1});break;
+  case 'rock':this.noise(.8,{vol:.5,f:300});this.tone(60,.6,{type:'sawtooth',vol:.07,to:35});break;
+  case 'map':this.noise(.25,{vol:.12,f:1800,type:'bandpass'});break;
+  case 'discard':this.noise(.12,{vol:.12,f:1200,type:'bandpass'});break;
+  case 'select':this.tone(880,.06,{vol:.06,type:'triangle'});break;
+  case 'turn':this.tone(988,.3,{vol:.07});this.tone(1480,.4,{vol:.05,at:.08});break;
+  case 'error':this.tone(150,.2,{type:'square',vol:.05});break;
+  case 'win':[523,659,784,1047,1319].forEach((f,i)=>this.tone(f,.5,{type:'triangle',vol:.12,at:i*.12}));break;
+  case 'lose':[392,330,262,196].forEach((f,i)=>this.tone(f,.5,{type:'triangle',vol:.1,at:i*.15}));break;
+  case 'round':this.tone(330,.5,{type:'triangle',vol:.1});this.tone(494,.6,{type:'triangle',vol:.08,at:.15});break;
+ }}catch(e){}},
+ startMusic(){if(!this.ensure()||this.music)return;const c=this.ctx,g=c.createGain();g.gain.setValueAtTime(0,c.currentTime);g.gain.linearRampToValueAtTime(.5,c.currentTime+2);g.connect(this.master);
+  const lp=c.createBiquadFilter();lp.type='lowpass';lp.frequency.value=420;lp.connect(g);
+  const oscs=[55,82.4,110.1].map((f,i)=>{const o=c.createOscillator();o.type=i?'triangle':'sawtooth';o.frequency.value=f;o.detune.value=(i-1)*6;const og=c.createGain();og.gain.value=i===0?.045:.032;o.connect(og);og.connect(lp);o.start();return o;});
+  const lfo=c.createOscillator();lfo.frequency.value=.07;const lg=c.createGain();lg.gain.value=160;lfo.connect(lg);lg.connect(lp.frequency);lfo.start();
+  const dl=c.createDelay();dl.delayTime.value=.42;const fb=c.createGain();fb.gain.value=.4;dl.connect(fb);fb.connect(dl);const mg=c.createGain();mg.gain.value=.6;mg.connect(g);dl.connect(mg);
+  const scale=[440,523.3,587.3,659.3,784,880,1046.5,1174.7];
+  const timer=setInterval(()=>{try{if(Math.random()<.5){const f=scale[Math.floor(Math.random()*scale.length)];this.tone(f,1.4,{vol:.04,dest:mg});this.tone(f,1.4,{vol:.025,dest:dl});}if(Math.random()<.12)this.tone(2200+Math.random()*900,.12,{vol:.025,to:1200,dest:dl});}catch(e){}},650);
+  this.music={g,oscs,lfo,timer};},
+ stopMusic(){if(!this.music)return;const {g,oscs,lfo,timer}=this.music;clearInterval(timer);const t=this.ctx.currentTime;g.gain.cancelScheduledValues(t);g.gain.setValueAtTime(g.gain.value,t);g.gain.linearRampToValueAtTime(0,t+.8);setTimeout(()=>{try{oscs.forEach(o=>o.stop());lfo.stop();g.disconnect();}catch(e){}},900);this.music=null;}
+};
+function syncSoundButtons(){document.querySelectorAll('[data-tog]').forEach(b=>{const on=b.dataset.tog==='music'?Sound.musicOn:Sound.sfxOn;b.classList.toggle('on',on);const s=b.querySelector('.qs');if(s)s.textContent=on?'เปิด':'ปิด';});}
+function toggleMusic(){Sound.musicOn=!Sound.musicOn;if(Sound.musicOn)Sound.startMusic();else Sound.stopMusic();store.set('music',Sound.musicOn?'1':'0');syncSoundButtons();}
+function toggleSfx(){Sound.sfxOn=!Sound.sfxOn;store.set('sfx',Sound.sfxOn?'1':'0');syncSoundButtons();if(Sound.sfxOn)Sound.play('select');}
+
+/* ================= MODAL STACK (one overlay at a time) ================= */
+const Modals={stack:[],
+ open(id){const i=this.stack.indexOf(id);if(i>=0)this.stack.splice(i,1);this.stack.push(id);this.sync();},
+ close(id){const i=this.stack.indexOf(id);if(i>=0){this.stack.splice(i,1);this.sync();}},
+ clear(){this.stack=[];this.sync();},
+ has(id){return this.stack.includes(id);},
+ sync(){const top=this.stack.includes('#ov-error')?'#ov-error':this.stack[this.stack.length-1];document.querySelectorAll('.overlay').forEach(o=>o.classList.toggle('show','#'+o.id===top));}
+};
+const showOv=id=>Modals.open(id),hideOv=id=>Modals.close(id),isShown=id=>Modals.has(id);
+
+/* ================= APP / UI ================= */
+let S=null;
+const App={mode:null,seat:0,view:null,sel:null,pending:null,bw:640,bh:440,bb:{minX:-1,minY:-2,maxX:8,maxY:2},tiles:new Map(),hands:new Map(),chips:[],
+ boardKey:null,gameId:null,lastSeq:-1,roleShown:null,roundShown:null,winShown:null,peekSeen:null,botTimer:null,wasMine:false,holdUntil:0,holdTimer:null,
+ soloN:4,soloR:3,onSeats:4,onR:3};
+
+function setAppH(){document.documentElement.style.setProperty('--appH',window.innerHeight+'px');}
+function showScreen(n){document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('active',s.id==='scr-'+n));try{window.scrollTo(0,0);}catch(e){}
+ if(n==='game')requestAnimationFrame(()=>{sizeHand();layoutBoard(true);});}
+function toast(msg,kind){const box=$('#toasts');
+ if($('#scr-game').classList.contains('active')){const r=$('#boardWrap').getBoundingClientRect();box.style.top=Math.max(8,Math.round(r.top+8))+'px';}else box.style.top='16px';
+ const t=el('div','toast '+(kind||''),msg);box.appendChild(t);while(box.children.length>3)box.removeChild(box.firstChild);
+ setTimeout(()=>t.classList.add('out'),2400);setTimeout(()=>{if(t.parentNode)t.parentNode.removeChild(t);},2900);}
+function showChoice(title,text,opts){$('#choiceTitle').textContent=title;$('#choiceText').textContent=text||'';const box=$('#choiceBtns');box.replaceChildren();
+ opts.forEach(o=>{const b=el('button','btn '+(o.cls||''),o.label);b.onclick=()=>{hideOv('#ov-choice');o.fn&&o.fn();};box.appendChild(b);});showOv('#ov-choice');}
+function showFatal(title,text){$('#errTitle').textContent=title;$('#errText').textContent=text;showOv('#ov-error');}
+
+const isMyTurn=()=>{const v=App.view;return !!(v&&v.phase==='play'&&v.me&&v.turn===v.me.seat);};
+const selCard=()=>{const v=App.view;if(!App.sel||!v||!v.me)return null;return v.me.hand.find(c=>c.id===App.sel.id)||null;};
+const myBroken=v=>!!(v.me&&TOOLS.some(t=>v.players[v.me.seat].broken[t]));
+const canHost=()=>App.mode==='solo'||App.mode==='host';
+const onlineCode=()=>(App.mode==='host'||App.mode==='client')?Net.code:null;
+
+function resetGameUI(){$('#board').querySelectorAll('.tile').forEach(t=>t.remove());App.tiles.clear();$('#handInner').replaceChildren();App.hands.clear();$('#players').replaceChildren();App.chips=[];
+ App.sel=null;App.pending=null;App.lastSeq=-1;App.roleShown=null;App.roundShown=null;App.winShown=null;App.boardKey=null;App.wasMine=false;App.holdUntil=0;$('#marks').replaceChildren();
+ ['#ov-role','#ov-draft','#ov-round','#ov-win','#ov-peek','#ov-choice'].forEach(hideOv);}
+
+function render(){
+ const v=App.view;if(!v)return;
+ if(v.gameId!==App.gameId){resetGameUI();App.gameId=v.gameId;App.peekSeen=v.me&&v.me.lastPeek?v.me.lastPeek.id:null;}
+ if(!$('#scr-game').classList.contains('active'))showScreen('game');
+ if(!isMyTurn()||!selCard()){App.sel=null;App.pending=null;}
+ renderTop(v);renderPlayers(v);renderBoard(v);renderHand(v);renderMarks(v);renderActionBar(v);renderLog(v);handleFx(v);renderOverlays(v);
+}
+function renderSel(){const v=App.view;if(!v)return;renderPlayers(v);renderHand(v);renderMarks(v);renderActionBar(v);}
+function renderTop(v){
+ $('#stRound').textContent=v.round+'/'+v.opts.rounds;$('#stDeck').textContent=v.deckCount;$('#stGold').textContent=v.me?sum(v.me.gold):0;
+ const code=onlineCode();$('#stRoomBox').hidden=!code;$('#stRoom').textContent=code||'';
+ const sr=$('#smRoom');sr.hidden=!code;sr.textContent=code?`🌐 รหัสห้อง: ${code}`:'';
+ const rc=$('#roleChip'),role=v.me&&v.me.role;rc.className='rolepill '+(role||'');rc.textContent=role?ROLE_ICON[role]+' '+ROLE_TH[role]:'🎭 บทบาท';
+ $('#dock').classList.toggle('mine',isMyTurn());
+}
+function renderPlayers(v){
+ const box=$('#players');
+ if(App.chips.length!==v.players.length){box.replaceChildren();App.chips=v.players.map((p,i)=>{const c=el('div','pchip');const av=el('div','av');av.innerHTML=dwarfSVG(i);const info=el('div','pinfo');const nm=el('div','pname');const meta=el('div','pmeta');info.append(nm,meta);c.append(av,info);c.addEventListener('click',()=>onChipClick(i));box.appendChild(c);return {c,nm,meta,prev:{}};});}
+ const sel=selCard(),my=isMyTurn();
+ v.players.forEach((p,i)=>{const ch=App.chips[i];
+  const isTurn=v.phase==='play'&&v.turn===i;
+  if(isTurn&&!ch.c.classList.contains('turn')){try{ch.c.scrollIntoView({block:'nearest',inline:'nearest',behavior:'smooth'});}catch(e){}}
+  ch.c.classList.toggle('turn',isTurn);ch.c.classList.toggle('me',!!(v.me&&v.me.seat===i));
+  const nmTxt=(p.isBot?'🤖 ':'')+p.name+(v.me&&v.me.seat===i?' (คุณ)':'');ch.nm.textContent=nmTxt;ch.c.title=nmTxt;
+  const meta=[el('span',null,'🂠'+p.handCount)];
+  TOOLS.forEach(t=>{if(p.broken[t]){const b=el('span','tb'+(!ch.prev[t]?' stamp':''),TOOL_ICON[t]);b.title=TOOL_TH[t]+'พัง';meta.push(b);}ch.prev[t]=p.broken[t];});
+  if(!p.online&&!p.isBot)meta.push(el('span','offl','ออฟไลน์'));
+  if(p.role&&v.phase!=='play')meta.push(el('span','rb '+p.role,ROLE_ICON[p.role]+' '+ROLE_TH[p.role]));
+  if(v.phase==='gameEnd'&&p.goldTotal!=null)meta.push(el('span',null,'💎'+p.goldTotal));
+  ch.meta.replaceChildren(...meta);
+  let tg=false;if(my&&sel&&sel.kind==='act'){if(sel.a==='break')tg=!p.broken[sel.tools[0]];else if(sel.a==='fix')tg=sel.tools.some(t=>p.broken[t]);}
+  ch.c.classList.toggle('targetable',tg);ch.c.classList.toggle('pending',!!(App.pending&&App.pending.target===i));});
+}
+
+/* ---------- board: always fit the whole mine in the center ---------- */
+function layoutBoard(noAnim){
+ const wrap=$('#boardWrap'),B=$('#board');const W=wrap.clientWidth,H=wrap.clientHeight;if(W<30||H<30)return;
+ const pad=10,s=Math.min((W-pad*2)/App.bw,(H-pad*2)/App.bh,1.9);
+ const ox=(W-App.bw*s)/2,oy=(H-App.bh*s)/2;
+ if(noAnim)B.classList.add('noanim');
+ B.style.transform=`translate(${ox.toFixed(1)}px,${oy.toFixed(1)}px) scale(${s.toFixed(4)})`;
+ if(noAnim){void B.offsetWidth;B.classList.remove('noanim');}
+}
+function renderBoard(v){
+ const board=v.board,bk=v.gameId+'-'+v.round;let fresh=false;
+ if(App.boardKey!==bk){App.tiles.forEach(t=>t.remove());App.tiles.clear();App.boardKey=bk;fresh=true;}
+ let a=99,b=-99,c=99,d=-99;const add=(x,y)=>{a=Math.min(a,x);b=Math.max(b,x);c=Math.min(c,y);d=Math.max(d,y);};
+ for(const k in board){const [x,y]=pk(k);add(x,y);}
+ if(v.phase==='play')for(const k of frontier(board,reach(board))){const [x,y]=pk(k);add(x,y);}
+ App.bb={minX:a,minY:c,maxX:b,maxY:d};App.bw=(b-a+1)*CW;App.bh=(d-c+1)*CH;
+ const B=$('#board');B.style.width=App.bw+'px';B.style.height=App.bh+'px';
+ const seen=new Set();
+ for(const k in board){const cell=board[k],[x,y]=pk(k);
+  const tsig=(cell.k||'FD')+':'+cell.r+':'+(cell.goal!=null&&!cell.k?((v.goals[cell.goal].type||'')+'/'+((v.me&&v.me.known[cell.goal])||'')):'');
+  let t=App.tiles.get(k);if(t&&t.dataset.id!==cell.id){t.remove();t=null;}
+  if(!t){t=el('div','tile');t.dataset.cell=k;t.dataset.id=cell.id;B.appendChild(t);App.tiles.set(k,t);if(!fresh){const tt=t;tt.classList.add('drop');setTimeout(()=>tt.classList.remove('drop'),500);}}
+  if(t.dataset.sig!==tsig){const wasFD=(t.dataset.sig||'').indexOf('FD')===0;t.innerHTML=tileSVG(cell,v);if(wasFD&&cell.k&&!fresh){t.classList.remove('flip');void t.offsetWidth;t.classList.add('flip');}t.dataset.sig=tsig;}
+  t.style.left=(x-a)*CW+'px';t.style.top=(y-c)*CH+'px';seen.add(k);}
+ for(const [k,t] of [...App.tiles]){if(!seen.has(k)){App.tiles.delete(k);t.classList.add('crumble');setTimeout(()=>t.remove(),460);}}
+ layoutBoard(fresh);
+}
+function renderMarks(v){
+ const layer=$('#marks');layer.replaceChildren();App.tiles.forEach(t=>t.classList.remove('targetable','pend'));
+ const c=selCard();if(!c||!isMyTurn())return;const {minX,minY}=App.bb;
+ const pos=(e,x,y)=>{e.style.left=(x-minX)*CW+'px';e.style.top=(y-minY)*CH+'px';};
+ if(c.kind==='path'){if(myBroken(v))return;const R=reach(v.board),rot=App.sel.rot;
+  for(const ck of candidateCells(v.board)){const [x,y]=pk(ck);const ok=canPlace(v.board,c.k,rot,x,y,R);const alt=!ok&&canPlace(v.board,c.k,1-rot,x,y,R);if(!ok&&!alt)continue;
+   const m=el('div','cand'+(alt?' alt':''));m.dataset.cell=ck;if(alt)m.title='ต้องหมุนการ์ด';pos(m,x,y);layer.appendChild(m);}
+  if(App.pending&&App.pending.cell){const [x,y]=pk(App.pending.cell);const g=el('div','ghost');g.innerHTML=pathSVG(c.k,rot);pos(g,x,y);layer.appendChild(g);}
+ }else if(c.a==='rock'||c.a==='map'){
+  for(const [k,t] of App.tiles){const cc=v.board[k];if(!cc)continue;const ok=c.a==='rock'?(cc.goal==null&&cc.k!=='START'):(cc.goal!=null&&!cc.k);if(ok)t.classList.add('targetable');if(App.pending&&App.pending.cell===k)t.classList.add('pend');}
+ }
+}
+/* ---------- hand: every card always visible, no scrolling ---------- */
+function handMaxW(){const h=window.innerHeight,w=window.innerWidth;let m=Math.round(h*0.09);if(w>=820)m=Math.min(m,70);return clamp(m,34,64);}
+function sizeHand(){
+ const box=$('#hand'),inner=$('#handInner'),maxW=handMaxW();box.style.height=(Math.round(maxW*1.4)+10)+'px';
+ const kids=inner.children,n=kids.length;if(!n)return;
+ const W=box.clientWidth-4,gap=n>6?4:6;
+ const w=Math.max(24,Math.floor(Math.min(maxW,(W-gap*(n-1))/n)));
+ for(let i=0;i<n;i++){const e=kids[i];e.style.width=w+'px';e.style.height=Math.round(w*1.4)+'px';e.style.marginLeft=(i?gap:0)+'px';}
+}
+function renderHand(v){
+ const box=$('#handInner'),hand=v.me?v.me.hand:[],ids=new Set(hand.map(c=>c.id));
+ for(const [id,e] of [...App.hands])if(!ids.has(id)){e.remove();App.hands.delete(id);}
+ const broken=myBroken(v);
+ hand.forEach((c,idx)=>{let e=App.hands.get(c.id);
+  if(!e){e=el('div','hcard deal');e.innerHTML=cardSVG(c);e.title=cardLabel(c);e.addEventListener('click',()=>onHandClick(c.id));App.hands.set(c.id,e);const ee=e;setTimeout(()=>ee.classList.remove('deal'),600);}
+  if(box.children[idx]!==e)box.insertBefore(e,box.children[idx]||null);
+  const s=!!(App.sel&&App.sel.id===c.id);e.classList.toggle('sel',s);e.classList.toggle('rot',s&&App.sel.rot===1);e.classList.toggle('blocked',c.kind==='path'&&broken);});
+ $('#handEmpty').hidden=hand.length>0;
+ sizeHand();
+}
+function renderActionBar(v){
+ const hint=$('#hint'),bR=$('#btnRotate'),bD=$('#btnDiscard'),bC=$('#btnConfirm'),bX=$('#btnCancel');
+ [bR,bD,bC,bX].forEach(b=>b.disabled=true);bC.textContent='✔ ใช้';
+ const setHint=t=>{hint.textContent=t;hint.title=t;};
+ if(v.phase!=='play'){setHint(v.phase==='gold'?'💎 กำลังแจกไพ่เพชร...':v.phase==='roundEnd'?'🏁 จบรอบแล้ว':'🏆 จบเกม');return;}
+ if(!isMyTurn()){setHint(`⏳ ตาของ ${v.players[v.turn].name}`);return;}
+ const c=selCard();if(!c){setHint('⭐ ตาของคุณ! แตะการ์ดในมือ 1 ใบ');return;}
+ bD.disabled=false;bX.disabled=false;bC.disabled=!App.pending;
+ const nm='⭐ '+cardLabel(c)+' · ';
+ if(c.kind==='path'){bC.textContent='✔ วาง';
+  if(myBroken(v)){setHint(nm+'เครื่องมือพัง วางไม่ได้ ใช้ใบอื่นหรือทิ้ง');bC.disabled=true;}
+  else{bR.disabled=symmetric(c.k);
+   if(App.pending)setHint(nm+'แตะช่องเดิมซ้ำ หรือกด “วาง”');
+   else{const R=reach(v.board);const any=candidateCells(v.board).some(ck=>{const [x,y]=pk(ck);return canPlace(v.board,c.k,0,x,y,R)||canPlace(v.board,c.k,1,x,y,R);});
+    setHint(nm+(any?'แตะช่องสีเขียว (สีเหลือง = ต้องหมุน)':'ไม่มีช่องที่วางได้ ลองใบอื่นหรือทิ้ง'));}}
+ }else if(c.a==='break'||c.a==='fix'){const p=App.pending;setHint(nm+(p?`เป้าหมาย: ${v.players[p.target].name}${p.tool?' ('+TOOL_TH[p.tool]+')':''}`:'แตะผู้เล่นที่มีกรอบเขียวด้านบน'));}
+ else if(c.a==='rock'){bC.textContent='✔ ถล่ม';setHint(nm+(App.pending?'กด “ถล่ม” เพื่อยืนยัน':'แตะการ์ดทางเดินที่ต้องการทำลาย'));}
+ else if(c.a==='map'){bC.textContent='✔ ดู';setHint(nm+(App.pending?'กด “ดู” เพื่อแอบดู':'แตะการ์ดเป้าหมายที่ต้องการแอบดู'));}
+}
+function renderLog(v){if(isShown('#ov-log'))fillLog();}
+function fillLog(){const v=App.view;const b=$('#logList2');if(!v){b.replaceChildren();return;}
+ b.replaceChildren(...v.log.slice(-60).map(l=>{const d=el('div',null,l.text);d.style.cssText='padding:4px 8px;border-radius:8px;background:rgba(0,0,0,.25);margin-bottom:3px;'+(l.cls==='sys'?'color:#9fd7ff':l.cls==='gold'?'color:#bff6ff':l.cls==='bad'?'color:#ffb3c6':'');return d;}));b.scrollTop=b.scrollHeight;}
+
+function renderOverlays(v){
+ const rk=v.gameId+'-'+v.round;
+ if(v.phase==='play'&&v.me&&App.roleShown!==rk){App.roleShown=rk;showRole(v,true);}
+ const lp=v.me&&v.me.lastPeek;if(lp&&lp.id!==App.peekSeen){App.peekSeen=lp.id;$('#peekCard').innerHTML=pathSVG(lp.type,0);$('#peekText').textContent=`การ์ดเป้าหมาย${GOAL_TH[lp.goal]}คือ “${lp.type==='GOLD'?'เพชร 💎':'หิน 🪨'}”`;showOv('#ov-peek');}
+ if(v.phase==='play'||v.phase==='gameEnd'&&false){hideOv('#ov-draft');hideOv('#ov-round');hideOv('#ov-win');return;}
+ const wait=App.holdUntil-Date.now();
+ if(wait>0){clearTimeout(App.holdTimer);App.holdTimer=setTimeout(()=>{if(App.view)renderOverlays(App.view);},wait+20);return;}
+ if(v.phase==='gold'&&v.draft)showDraft(v);else hideOv('#ov-draft');
+ if(v.phase==='roundEnd'){if(App.roundShown!==rk){App.roundShown=rk;buildRound(v);showOv('#ov-round');}}else hideOv('#ov-round');
+ if(v.phase==='gameEnd'){if(App.winShown!==v.gameId){App.winShown=v.gameId;buildWin(v);showOv('#ov-win');}}else hideOv('#ov-win');
+}
+function showRole(v,withSound){const r=v.me.role;$('#roleCard').className='rolecard '+r;$('#roleAv').innerHTML=dwarfSVG(v.me.seat);$('#roleIcon').textContent=ROLE_ICON[r];$('#roleName').textContent=r==='sab'?'ฝ่ายร้าย':'ฝ่ายคนแคระ';
+ $('#roleDesc').textContent=r==='sab'?'ขัดขวางไม่ให้คนแคระขุดถึงเพชรอย่างแนบเนียน'+(v.opts.stoneEnds?' ถ้าทางเชื่อมถึงการ์ดหินได้ ฝ่ายร้ายชนะทันที!':'')+' คุณไม่รู้ว่าใครเป็นพวกเดียวกัน':'ร่วมมือกับคนแคระคนอื่น ต่ออุโมงค์จากทางเข้าไปให้ถึงเพชร'+(v.opts.stoneEnds?' ระวัง! ถ้าเชื่อมไปเจอหิน ฝ่ายร้ายชนะทันที ใช้แผนที่ช่วยหาเพชรก่อน':'');
+ showOv('#ov-role');if(withSound)Sound.play('round');}
+function showDraft(v){const d=v.draft,box=$('#draftCards');box.replaceChildren();
+ if(v.me&&d.picker===v.me.seat&&d.offer){$('#draftText').textContent=`ถึงคิวคุณแล้ว! เลือกไพ่เพชร 1 ใบ (เหลือ ${d.offerCount} ใบ)`;
+  d.offer.forEach((val,i)=>{const g=el('div','gemcard');g.innerHTML=gemCardSVG(val);g.onclick=()=>{Sound.play('gem');send({type:'draft',idx:i});};box.appendChild(g);});}
+ else{$('#draftText').textContent=`รอ ${d.picker!=null?v.players[d.picker].name:'...'} เลือกไพ่เพชร (เหลือ ${d.offerCount} ใบ)`;
+  for(let i=0;i<d.offerCount;i++){const g=el('div','gemcard back');g.innerHTML=gemBackSVG();box.appendChild(g);}}
+ showOv('#ov-draft');}
+function buildRound(v){
+ const r=v.result;if(!r)return;
+ $('#roundTitle').textContent=r.winner==='miners'?`💎 ฝ่ายคนแคระชนะรอบที่ ${v.round}!`:`😈 ฝ่ายร้ายชนะรอบที่ ${v.round}!`;
+ const why=r.reason==='gold'?`${v.players[r.reacher].name} ขุดถึงเพชร`:r.reason==='stone'?`${v.players[r.reacher].name} ขุดไปเจอหิน`:'การ์ดหมดทุกมือ ยังไม่มีใครถึงเพชร';
+ $('#roundSub').textContent=`${why} • การ์ดบทบาทที่เหลือ: ${ROLE_TH[v.leftover]||'-'}`;
+ const rows=v.players.map((p,i)=>{const row=el('div','resrow');const av=el('div','av');av.innerHTML=dwarfSVG(i);
+  const rr=r.rows[i];const gain=rr.total!=null?(rr.total?`+${rr.total} 💎`:'—'):(rr.count?`+${rr.count} ใบ (ลับ)`:'—');
+  const mid=el('div');mid.style.minWidth='0';mid.append(el('div','nm',p.name+(v.me&&v.me.seat===i?' (คุณ)':'')),el('span','rb '+p.role,ROLE_ICON[p.role]+' '+ROLE_TH[p.role]));
+  row.append(av,mid,el('div','gain',gain));return row;});
+ $('#roundRows').replaceChildren(...rows);
+ $('#roundExtra').textContent=`เพชรสะสมของคุณ: ${v.me?sum(v.me.gold):0} เม็ด (ของคนอื่นเป็นความลับจนจบเกม)`;
+ const nb=$('#roundNext');nb.disabled=!canHost();nb.textContent=!canHost()?'⏳ รอโฮสต์เริ่มรอบถัดไป...':v.round>=v.opts.rounds?'ดูผลรวม 🏆':'เริ่มรอบถัดไป ➜';
+ if(v.me){const won=(r.winner==='miners')===(v.me.role==='miner');Sound.play(won?'win':'lose');}
+}
+function buildWin(v){
+ const order=v.players.map((p,i)=>({p,i})).sort((a,b)=>(b.p.goldTotal||0)-(a.p.goldTotal||0));
+ const best=order.length?order[0].p.goldTotal||0:0;const winners=order.filter(o=>(o.p.goldTotal||0)===best);
+ $('#winTitle').textContent='🏆 ผู้ชนะ: '+winners.map(o=>o.p.name).join(', ');
+ $('#winRows').replaceChildren(...order.map((o,rank)=>{const row=el('div','resrow rank'+((o.p.goldTotal||0)===best?' win':''));const av=el('div','av');av.innerHTML=dwarfSVG(o.i);
+  row.append(el('div','gain',(rank+1)+'.'),av,el('div','nm',o.p.name+(v.me&&v.me.seat===o.i?' (คุณ)':'')),el('div','gain','💎 '+(o.p.goldTotal||0)));return row;}));
+ $('#winAgain').hidden=!canHost();$('#winWait').textContent=(canHost()?'':'รอโฮสต์เริ่มเกมใหม่ หรือกลับเมนู • ')+`เล่นครบ ${v.opts.rounds} รอบ`;
+ Sound.play(winners.some(o=>v.me&&o.i===v.me.seat)?'win':'lose');
+}
+function handleFx(v){
+ const m=v.lastMove;
+ if(m&&m.seq!==App.lastSeq){const first=App.lastSeq<0;App.lastSeq=m.seq;
+  if(!first){
+   if(m.t==='path'){Sound.play('place');const t=App.tiles.get(key(m.x,m.y));if(t){App.tiles.forEach(x=>x.classList.remove('last'));t.classList.add('last');setTimeout(()=>t.classList.remove('last'),1800);}
+    if(m.reveal&&m.reveal.length){App.holdUntil=Date.now()+1300;setTimeout(()=>Sound.play(m.gold?'gem':'flip'),300);
+     if(m.gold)toast('💎 ขุดเจอเพชรแล้ว!','good');else toast(v.opts.stoneEnds?'🪨 เจอหิน! ฝ่ายร้ายชนะรอบนี้':'🪨 การ์ดเป้าหมายเป็นหิน',v.opts.stoneEnds?'bad':'');}}
+   else if(m.t==='break'){Sound.play('break');if(v.me&&m.target===v.me.seat&&m.p!==v.me.seat)toast(`${v.players[m.p].name} ทำ${TOOL_TH[m.tool]}ของคุณพัง!`,'bad');}
+   else if(m.t==='fix'){Sound.play('fix');if(v.me&&m.target===v.me.seat&&m.p!==v.me.seat)toast(`${v.players[m.p].name} ซ่อม${TOOL_TH[m.tool]}ให้คุณ`,'good');}
+   else if(m.t==='rock')Sound.play('rock');else if(m.t==='map')Sound.play('map');else if(m.t==='discard')Sound.play('discard');}}
+ const mine=isMyTurn();if(mine&&!App.wasMine)Sound.play('turn');App.wasMine=mine;
+}
+
+/* ================= INPUT ================= */
+function onHandClick(id){
+ const v=App.view;if(!v)return;
+ if(!isMyTurn()){toast(v.phase==='play'?'ยังไม่ถึงตาของคุณ':'ตอนนี้ยังเล่นการ์ดไม่ได้');return;}
+ if(App.sel&&App.sel.id===id){App.sel=null;App.pending=null;}
+ else{App.sel={id,rot:0};App.pending=null;Sound.play('select');const c=selCard();if(c&&c.kind==='path'&&myBroken(v))toast('เครื่องมือของคุณพัง จึงวางการ์ดทางเดินไม่ได้','bad');}
+ renderSel();
+}
+function onChipClick(i){
+ const v=App.view,c=selCard();if(!v||!c||!isMyTurn()||c.kind!=='act')return;
+ const p=v.players[i];
+ if(c.a==='break'){const tool=c.tools[0];if(p.broken[tool]){toast(`${p.name} มี${TOOL_TH[tool]}พังอยู่แล้ว`,'bad');return;}
+  if(App.pending&&App.pending.target===i){confirmAction();return;}App.pending={target:i,tool};renderSel();}
+ else if(c.a==='fix'){const opts=c.tools.filter(t=>p.broken[t]);if(!opts.length){toast(`${p.name} ไม่มีเครื่องมือที่การ์ดนี้ซ่อมได้`,'bad');return;}
+  if(App.pending&&App.pending.target===i&&opts.length===1){confirmAction();return;}
+  if(opts.length>1)showChoice('เลือกเครื่องมือที่จะซ่อม',`ซ่อมให้ ${p.name} ได้ 1 อย่าง`,[...opts.map(t=>({label:TOOL_ICON[t]+' '+TOOL_TH[t],cls:'gem',fn:()=>{App.pending={target:i,tool:t};renderSel();}})),{label:'ยกเลิก',cls:'ghost'}]);
+  else{App.pending={target:i,tool:opts[0]};renderSel();}}
+}
+function onBoardClick(e){
+ const v=App.view,c=selCard();if(!v||!c||!isMyTurn())return;
+ const cand=e.target.closest('.cand');
+ if(cand&&c.kind==='path'){const cell=cand.dataset.cell,[x,y]=pk(cell),R=reach(v.board);
+  if(!canPlace(v.board,c.k,App.sel.rot,x,y,R)){if(canPlace(v.board,c.k,1-App.sel.rot,x,y,R)){App.sel.rot=1-App.sel.rot;toast('หมุนการ์ดให้อัตโนมัติ ⟳');}else return;}
+  if(App.pending&&App.pending.cell===cell){confirmAction();return;}
+  App.pending={cell};Sound.play('select');renderSel();return;}
+ const tile=e.target.closest('.tile');
+ if(tile&&tile.classList.contains('targetable')){const cell=tile.dataset.cell;if(App.pending&&App.pending.cell===cell){confirmAction();return;}App.pending={cell};Sound.play('select');renderSel();}
+}
+function confirmAction(){
+ const v=App.view,c=selCard(),p=App.pending;if(!v||!c||!p||!isMyTurn())return;let a=null;
+ if(c.kind==='path'){const [x,y]=pk(p.cell);a={type:'path',cardId:c.id,x,y,rot:App.sel.rot};}
+ else if(c.a==='break')a={type:'break',cardId:c.id,target:p.target};
+ else if(c.a==='fix')a={type:'fix',cardId:c.id,target:p.target,tool:p.tool};
+ else if(c.a==='rock'){const [x,y]=pk(p.cell);a={type:'rock',cardId:c.id,x,y};}
+ else if(c.a==='map'){const cc=v.board[p.cell];if(!cc||cc.goal==null)return;a={type:'map',cardId:c.id,goal:cc.goal};}
+ if(!a)return;App.sel=null;App.pending=null;send(a);renderSel();
+}
+function discardSel(){const c=selCard();if(!c||!isMyTurn())return;App.sel=null;App.pending=null;send({type:'discard',cardId:c.id});renderSel();}
+function rotateSel(){const v=App.view,c=selCard();if(!v||!c||c.kind!=='path'||symmetric(c.k)||!isMyTurn())return;App.sel.rot^=1;Sound.play('select');
+ if(App.pending&&App.pending.cell){const [x,y]=pk(App.pending.cell);if(!canPlace(v.board,c.k,App.sel.rot,x,y,reach(v.board)))App.pending=null;}renderSel();}
+function cancelSel(){App.sel=null;App.pending=null;renderSel();}
+
+/* ================= DISPATCH ================= */
+function send(a){
+ if(canHost()){if(!S)return;const res=applyAction(S,App.seat,a);if(!res.ok){toast(res.err,'bad');Sound.play('error');render();return;}afterChange();}
+ else if(App.mode==='client'){if(!Net.hostConn||!Net.hostConn.open){toast('ยังไม่ได้เชื่อมต่อกับโฮสต์ กรุณารอสักครู่','bad');return;}try{Net.hostConn.send({t:'act',a});}catch(e){toast('ส่งคำสั่งไม่สำเร็จ','bad');}}
+}
+function afterChange(){
+ if(!S)return;App.view=viewFor(S,App.seat);render();
+ if(App.mode==='host')hostBroadcast();
+ saveLast();scheduleBots();
+}
+function saveLast(){if(!S)return;try{if(App.mode==='solo')store.set('last',JSON.stringify({kind:'solo',S,t:Date.now()}));else if(App.mode==='host')store.set('last',JSON.stringify({kind:'host',code:Net.code,S,t:Date.now()}));}catch(e){}}
+function scheduleBots(){if(App.botTimer)return;if(!S||!canHost()||S.phase!=='play'||!S.players[S.turn].isBot)return;App.botTimer=setTimeout(botStep,900+Math.random()*700);}
+const PAUSE_OV=['#ov-role','#ov-peek','#ov-tut','#ov-choice','#ov-menu','#ov-log'];
+function botStep(){App.botTimer=null;if(!S||!canHost()||S.phase!=='play')return;const p=S.players[S.turn];if(!p.isBot)return;
+ if(App.mode==='solo'&&PAUSE_OV.some(isShown)){App.botTimer=setTimeout(botStep,600);return;}
+ botPlay(S.turn,false);}
+function botPlay(seat,proxy){
+ if(proxy)addLog(S,`🤖 ระบบเล่นแทน ${S.players[seat].name} ที่ออฟไลน์`,'sys');
+ let a=null;try{a=botDecide(viewFor(S,seat));}catch(e){console.error(e);}
+ const res=a?applyAction(S,seat,a):fail('');
+ if(!res.ok){const c=S.players[seat].hand[0];if(c)applyAction(S,seat,{type:'discard',cardId:c.id});}
+ afterChange();
+}
+function hostWatch(){
+ if(App.mode!=='host'||!S)return;
+ if(S.phase==='play'){const p=S.players[S.turn];if(!p.isBot&&!p.online&&Date.now()-S.turnStart>30000)botPlay(S.turn,true);}
+ else if(S.phase==='gold'&&S.draft&&S.draft.picker!=null){const p=S.players[S.draft.picker];
+  if(!p.online&&!p.isBot&&Date.now()-S.draftStart>15000){const o=S.draft.offer;let bi=0;o.forEach((v,i)=>{if(v>o[bi])bi=i;});applyAction(S,S.draft.picker,{type:'draft',idx:bi});afterChange();}}
+}
+function botNames(exclude){const used=new Set(exclude||[]);return shuffle(DWARF_NAMES.filter(n=>!used.has(n))).concat(shuffle(EXTRA_NAMES.filter(n=>!used.has(n))));}
+function startSolo(){
+ const name=cleanName($('#soloName').value);store.set('name',name);
+ const bn=botNames([name]);const defs=[{name}];while(defs.length<App.soloN)defs.push({name:bn.shift()||('บอท '+defs.length),isBot:true});
+ netShutdown();S=newGame(defs,'solo',{rounds:App.soloR,stoneEnds:$('#soloStone').checked});App.mode='solo';App.seat=0;App.gameId=null;showScreen('game');afterChange();
+}
+function restartGame(){
+ if(!S||!canHost())return;const old=S;
+ const defs=old.players.map(p=>({name:p.name,isBot:p.isBot,token:p.token}));
+ S=newGame(defs,old.mode,old.opts);S.players.forEach((p,i)=>p.online=old.players[i].online);
+ hideOv('#ov-win');afterChange();
+}
+function leaveGame(){
+ clearTimeout(App.botTimer);App.botTimer=null;clearTimeout(App.holdTimer);
+ hostCloseRoom();
+ S=null;App.view=null;App.mode=null;App.gameId=null;resetGameUI();store.del('last');
+ Modals.clear();showScreen('menu');refreshResume();
+}
+
+/* ================= NETWORK (PeerJS P2P, host-authoritative) ================= */
+const Net={peer:null,role:null,code:null,conns:new Map(),hostConn:null,members:[],seats:4,rounds:3,stone:true,fill:true,everJoined:false,retry:0,retryTimer:null,closing:false,name:''};
+const hostId=c=>'sab7-v2-'+c;
+function genCode(){const A='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let s='';for(let i=0;i<5;i++)s+=A[Math.floor(Math.random()*A.length)];return s;}
+function myToken(){let t=store.get('token');if(!t){t=Math.random().toString(36).slice(2)+Date.now().toString(36);store.set('token',t);}return t;}
+function onErr(msg){const e=$('#onError');e.textContent=msg||'';e.hidden=!msg;}
+function onStatus(msg){$('#onStatus').textContent=msg||'';}
+function setBanner(msg){const b=$('#netBanner');b.hidden=!msg;b.textContent=msg||'';if(msg)onStatus(msg);requestAnimationFrame(()=>layoutBoard(true));}
+function roomLink(code){return location.href.split('#')[0].split('?')[0]+'?room='+code;}
+function peerReady(){if(!window.Peer){onErr(window.__peerFail?'โหลดระบบเชื่อมต่อออนไลน์ไม่สำเร็จ (ตรวจสอบอินเทอร์เน็ตหรือปิดตัวบล็อกโฆษณา)':'ระบบเชื่อมต่อยังโหลดไม่เสร็จ กรุณาลองใหม่อีกครั้งในไม่กี่วินาที');return false;}return true;}
+function peerErrText(e){const m={'peer-unavailable':'ไม่พบห้องนี้ หรือโฮสต์ออฟไลน์อยู่','unavailable-id':'รหัสห้องนี้ถูกใช้งานอยู่','network':'เชื่อมต่อเซิร์ฟเวอร์จับคู่ไม่ได้ (ตรวจสอบอินเทอร์เน็ต)','server-error':'เซิร์ฟเวอร์จับคู่มีปัญหา ลองใหม่ภายหลัง','socket-error':'การเชื่อมต่อขัดข้อง','socket-closed':'การเชื่อมต่อถูกปิด','browser-incompatible':'เบราว์เซอร์นี้ไม่รองรับ WebRTC','webrtc':'การเชื่อมต่อ WebRTC ล้มเหลว (เครือข่ายอาจบล็อกไว้)','disconnected':'หลุดจากเซิร์ฟเวอร์จับคู่'};return m[e&&e.type]||('ข้อผิดพลาดในการเชื่อมต่อ: '+((e&&e.type)||'ไม่ทราบสาเหตุ'));}
+function netShutdown(){
+ Net.closing=true;clearTimeout(Net.retryTimer);Net.retryTimer=null;
+ Net.conns.forEach((_,c)=>{try{c.close();}catch(e){}});Net.conns.clear();
+ if(Net.hostConn){try{Net.hostConn.close();}catch(e){}}Net.hostConn=null;
+ const p=Net.peer;Net.peer=null;if(p){try{p.destroy();}catch(e){}}
+ Net.role=null;Net.members=[];Net.everJoined=false;Net.retry=0;setBanner(null);
+}
+function hostCloseRoom(){if(Net.role==='host'){Net.conns.forEach((_,c)=>{try{c.send({t:'closed'});}catch(e){}});setTimeout(netShutdown,200);}else netShutdown();}
+/* ----- host ----- */
+function hostCreate(resume){
+ if(!peerReady())return false;
+ onErr('');Net.closing=false;Net.role='host';Net.code=resume?resume.code:genCode();
+ let tries=0;
+ const open=()=>{
+  const old=Net.peer;Net.peer=null;if(old){try{old.destroy();}catch(e){}}
+  const p=new Peer(hostId(Net.code),{debug:1});Net.peer=p;
+  onStatus(resume?'⏳ กำลังเปิดห้องเดิมอีกครั้ง...':'⏳ กำลังสร้างห้อง...');
+  p.on('open',()=>{if(Net.peer!==p)return;setBanner(null);
+   if(S){onStatus('ห้องเปิดแล้ว รอผู้เล่นเชื่อมต่อกลับ');toast(`🌐 เปิดห้อง ${Net.code} แล้ว ผู้เล่นจะเชื่อมต่อกลับอัตโนมัติ`,'good');if(App.view)renderTop(App.view);}
+   else{onStatus('');Net.members=[{name:Net.name,token:myToken(),host:true}];broadcastLobby();}});
+  p.on('connection',c=>{if(Net.peer!==p)return;hostOnConn(c);});
+  p.on('disconnected',()=>{if(Net.peer!==p||Net.closing)return;setTimeout(()=>{try{if(Net.peer===p&&!p.destroyed)p.reconnect();}catch(e){}},1500);});
+  p.on('error',e=>{if(Net.peer!==p)return;
+   if(e.type==='unavailable-id'){
+    if(resume&&tries++<12){onStatus('⏳ รหัสห้องยังค้างอยู่ในระบบ กำลังลองใหม่...');setBanner('⏳ กำลังเปิดห้องเดิม รอสักครู่...');setTimeout(()=>{if(Net.role==='host')open();},3000);}
+    else if(!resume&&tries++<5){Net.code=genCode();open();}
+    else{onErr(peerErrText(e));if(S)setBanner('⚠️ เปิดห้องออนไลน์ไม่สำเร็จ ผู้เล่นอื่นยังเชื่อมต่อไม่ได้');}
+    return;}
+   if(e.type==='peer-unavailable')return;
+   if(S)setBanner('⚠️ '+peerErrText(e));else onErr(peerErrText(e));});
+ };
+ open();return true;
+}
+function hostOnConn(c){
+ c.on('data',d=>{try{hostOnData(c,d);}catch(err){console.error(err);}});
+ c.on('close',()=>hostOnClose(c));
+ c.on('error',()=>hostOnClose(c));
+}
+function rejectConn(c,msg){try{c.send({t:'error',msg});}catch(e){}setTimeout(()=>{try{c.close();}catch(e){}},500);}
+function hostOnData(c,d){
+ if(!d||typeof d!=='object')return;
+ if(d.t==='hello'){
+  const tok=String(d.token||'').slice(0,60),name=cleanName(d.name);if(!tok)return;
+  if(S){const idx=S.players.findIndex(p=>!p.isBot&&p.token===tok);
+   if(idx<0)return rejectConn(c,'เกมในห้องนี้เริ่มไปแล้ว จึงเข้าร่วมเพิ่มไม่ได้');
+   if(idx===S.hostSeat)return rejectConn(c,'อุปกรณ์นี้เป็นโฮสต์ของห้องอยู่แล้ว');
+   Net.conns.forEach((info,cc)=>{if(cc!==c&&info.token===tok){Net.conns.delete(cc);try{cc.close();}catch(e){}}});
+   Net.conns.set(c,{token:tok,seat:idx});
+   if(!S.players[idx].online){S.players[idx].online=true;addLog(S,`🔌 ${S.players[idx].name} เชื่อมต่อกลับมาแล้ว`,'sys');}
+   afterChange();return;}
+  if(tok===myToken())return rejectConn(c,'ไม่สามารถเข้าห้องของตัวเองจากเบราว์เซอร์เดียวกันได้ (ใช้อุปกรณ์อื่นหรือหน้าต่างไม่ระบุตัวตน)');
+  const ex=Net.members.find(m=>m.token===tok);
+  if(ex){ex.name=name;}
+  else if(Net.members.length>=Net.seats)return rejectConn(c,'ห้องเต็มแล้ว');
+  else Net.members.push({name,token:tok,host:false});
+  Net.conns.forEach((info,cc)=>{if(cc!==c&&info.token===tok){Net.conns.delete(cc);try{cc.close();}catch(e){}}});
+  Net.conns.set(c,{token:tok,seat:null});broadcastLobby();return;
+ }
+ const info=Net.conns.get(c);if(!info)return;
+ if(d.t==='act'){if(!S||info.seat==null)return;const res=applyAction(S,info.seat,d.a);if(!res.ok){try{c.send({t:'reject',msg:res.err});}catch(e){}return;}afterChange();}
+}
+function hostOnClose(c){
+ const info=Net.conns.get(c);if(!info)return;Net.conns.delete(c);
+ const still=[...Net.conns.values()].some(i=>i.token===info.token);if(still)return;
+ if(S&&info.seat!=null){const p=S.players[info.seat];if(p&&p.online){p.online=false;addLog(S,`⚠️ ${p.name} หลุดการเชื่อมต่อ (ถ้าไม่กลับมาใน 30 วินาที ระบบจะเล่นแทนชั่วคราว)`,'bad');afterChange();}}
+ else if(!S){Net.members=Net.members.filter(m=>m.host||m.token!==info.token);broadcastLobby();}
+}
+function broadcastLobby(){
+ const msg={t:'lobby',code:Net.code,seats:Net.seats,rounds:Net.rounds,stone:Net.stone,fill:Net.fill,members:Net.members.map(m=>({name:m.name,host:!!m.host}))};
+ Net.conns.forEach((_,c)=>{try{c.send(msg);}catch(e){}});renderLobby(msg);
+}
+function hostBroadcast(){if(!S)return;Net.conns.forEach((info,c)=>{if(info.seat==null||!c.open)return;try{c.send({t:'state',v:viewFor(S,info.seat)});}catch(e){}});}
+function hostStart(){
+ let defs=Net.members.map(m=>({name:m.name,token:m.token}));
+ if(Net.fill){const bn=botNames(defs.map(d=>d.name));while(defs.length<Net.seats)defs.push({name:bn.shift()||('บอท '+defs.length),isBot:true});}
+ if(defs.length<3){onErr('ต้องมีผู้เล่นอย่างน้อย 3 คน (หรือเปิดตัวเลือกเติมบอท)');return;}
+ defs=defs.slice(0,10);
+ S=newGame(defs,'host',{rounds:Net.rounds,stoneEnds:Net.stone});S.hostSeat=0;
+ Net.conns.forEach(info=>{const i=S.players.findIndex(p=>!p.isBot&&p.token===info.token);info.seat=i<0?null:i;});
+ App.mode='host';App.seat=0;App.gameId=null;onErr('');showScreen('game');afterChange();
+}
+/* ----- client ----- */
+function clientJoin(code,name){
+ if(!peerReady())return false;
+ onErr('');netShutdown();Net.closing=false;Net.role='client';Net.code=code;Net.name=name;Net.everJoined=false;Net.retry=0;
+ store.set('last',JSON.stringify({kind:'client',code,name,t:Date.now()}));
+ onStatus(`⏳ กำลังเชื่อมต่อห้อง ${code}...`);newClientPeer();return true;
+}
+function newClientPeer(){
+ const old=Net.peer;Net.peer=null;if(old){try{old.destroy();}catch(e){}}
+ const p=new Peer({debug:1});Net.peer=p;
+ p.on('open',()=>{if(Net.peer===p)clientConnect();});
+ p.on('disconnected',()=>{if(Net.peer!==p||Net.closing)return;setTimeout(()=>{try{if(Net.peer===p&&!p.destroyed)p.reconnect();}catch(e){}},1200);});
+ p.on('error',e=>{if(Net.peer!==p||Net.closing)return;
+  if(!Net.everJoined){onErr(e.type==='peer-unavailable'?`ไม่พบห้อง ${Net.code} (รหัสผิด หรือโฮสต์ปิดห้องแล้ว)`:peerErrText(e));onStatus('');return;}
+  scheduleReconnect();});
+}
+function clientConnect(){
+ if(!Net.peer||Net.closing)return;
+ const c=Net.peer.connect(hostId(Net.code),{reliable:true});Net.hostConn=c;
+ const to=setTimeout(()=>{if(Net.hostConn!==c||c.open)return;try{c.close();}catch(e){}if(Net.everJoined)scheduleReconnect();else{onErr('เชื่อมต่อห้องไม่สำเร็จ (หมดเวลา) เครือข่ายอาจบล็อกการเชื่อมต่อแบบ P2P');onStatus('');}},12000);
+ c.on('open',()=>{clearTimeout(to);if(Net.hostConn!==c)return;Net.retry=0;Net.everJoined=true;setBanner(null);onStatus('✅ เชื่อมต่อแล้ว');try{c.send({t:'hello',name:Net.name,token:myToken()});}catch(e){}});
+ c.on('data',d=>{if(Net.hostConn===c)clientOnData(d);});
+ c.on('close',()=>{if(Net.closing||Net.hostConn!==c)return;scheduleReconnect();});
+ c.on('error',()=>{if(Net.closing||Net.hostConn!==c)return;scheduleReconnect();});
+}
+function scheduleReconnect(){
+ if(Net.closing||Net.retryTimer||Net.role!=='client')return;Net.retry++;
+ if(Net.retry>25){setBanner(null);showFatal('ขาดการเชื่อมต่อกับโฮสต์','ไม่สามารถเชื่อมต่อกลับไปยังห้องได้ โฮสต์อาจปิดเกมไปแล้ว คุณสามารถกด “กลับเข้าเกมเดิม” ที่เมนูเพื่อลองอีกครั้ง');return;}
+ setBanner(`⚠️ การเชื่อมต่อหลุด กำลังเชื่อมต่อใหม่... (ครั้งที่ ${Net.retry})`);
+ Net.retryTimer=setTimeout(()=>{Net.retryTimer=null;if(Net.closing)return;const p=Net.peer;
+  if(!p||p.destroyed)newClientPeer();else if(p.disconnected){try{p.reconnect();}catch(e){}setTimeout(clientConnect,1500);}else clientConnect();},2500);
+}
+function clientOnData(d){
+ if(!d||typeof d!=='object')return;
+ if(d.t==='lobby'){renderLobby(d);}
+ else if(d.t==='state'&&d.v&&d.v.me){App.mode='client';App.seat=d.v.me.seat;App.view=d.v;render();}
+ else if(d.t==='reject'){toast(d.msg||'ทำไม่ได้','bad');Sound.play('error');if(App.view)render();}
+ else if(d.t==='error'){const inGame=$('#scr-game').classList.contains('active');netShutdown();store.del('last');if(inGame)showFatal('เข้าร่วมไม่ได้',d.msg);else{showScreen('online');$('#onForm').hidden=false;$('#onLobby').hidden=true;onStatus('');onErr(d.msg);}}
+ else if(d.t==='closed'){netShutdown();store.del('last');showFatal('โฮสต์ปิดห้องแล้ว','ห้องนี้ถูกปิดโดยโฮสต์');}
+}
+function renderLobby(d){
+ if(!$('#scr-online').classList.contains('active'))showScreen('online');
+ $('#onForm').hidden=true;$('#onLobby').hidden=false;onStatus('');
+ $('#lbCode').textContent=d.code;$('#lbLink').value=roomLink(d.code);
+ const isHost=Net.role==='host';
+ $('#lbInfo').textContent=`ผู้เล่น ${d.members.length}/${d.seats} คน • เล่น ${d.rounds||3} รอบ • ${d.stone!==false?'เจอหิน = ฝ่ายร้ายชนะทันที':'กติกาต้นฉบับ'}`+(d.fill?' • ที่นั่งว่างเติมด้วยบอท':'');
+ $('#lbMembers').replaceChildren(...d.members.map((m,i)=>{const r=el('div','member');const av=el('div','av');av.innerHTML=dwarfSVG(i);r.append(av,el('span','nm',m.name),el('span','tag',m.host?'👑 โฮสต์':'พร้อม'));return r;}));
+ $('#lbStart').hidden=!isHost;$('#lbWait').hidden=isHost;$('#lbStart').disabled=!d.fill&&d.members.length<3;
+}
+
+/* ================= SETUP / MENU ================= */
+function buildSeg(box,from,to,val,onPick){box.replaceChildren();for(let n=from;n<=to;n++){const b=el('button',n===val?'on':'',String(n));b.onclick=()=>{box.querySelectorAll('button').forEach(x=>x.classList.remove('on'));b.classList.add('on');onPick(n);};box.appendChild(b);}}
+function soloInfo(){const n=App.soloN,[s,m]=ROLE_TABLE[n];$('#soloInfo').textContent=`คุณ + บอท ${n-1} ตัว • การ์ดบทบาท: ฝ่ายร้าย ${s} / คนแคระ ${m} • ถือการ์ดคนละ ${handSize(n)} ใบ • เล่น ${App.soloR} รอบ`;}
+function refreshResume(){
+ let last=null;try{last=JSON.parse(store.get('last')||'null');}catch(e){}
+ const b=$('#btnResume');if(!last||Date.now()-(last.t||0)>12*3600e3){b.hidden=true;return;}
+ b.hidden=false;b.textContent=last.kind==='solo'?'🔁 เล่นเกมกับบอทต่อ':last.kind==='host'?`🔁 เปิดห้อง ${last.code} ต่อ (โฮสต์)`:`🔁 กลับเข้าห้อง ${last.code}`;
+}
+function resume(){
+ let last=null;try{last=JSON.parse(store.get('last')||'null');}catch(e){}
+ if(!last){refreshResume();return;}
+ if(last.kind==='solo'&&last.S){S=last.S;App.mode='solo';App.seat=0;App.gameId=null;showScreen('game');afterChange();}
+ else if(last.kind==='host'&&last.S){
+  if(!window.Peer){toast('ระบบออนไลน์ยังโหลดไม่เสร็จ ลองใหม่อีกครั้ง','bad');return;}
+  netShutdown();S=last.S;S.players.forEach((p,i)=>{if(i!==S.hostSeat&&!p.isBot)p.online=false;});S.turnStart=Date.now();if(S.phase==='gold')S.draftStart=Date.now();
+  Net.name=S.players[S.hostSeat].name;App.mode='host';App.seat=S.hostSeat;App.gameId=null;showScreen('game');
+  hostCreate({code:last.code});afterChange();}
+ else if(last.kind==='client'){showScreen('online');$('#onForm').hidden=false;$('#onLobby').hidden=true;$('#onName').value=last.name||'';$('#onCode').value=last.code;setTab('join');clientJoin(last.code,cleanName(last.name));}
+}
+function setTab(t){$('#tabCreate').classList.toggle('on',t==='create');$('#tabJoin').classList.toggle('on',t==='join');$('#paneCreate').hidden=t!=='create';$('#paneJoin').hidden=t!=='join';onErr('');}
+
+/* ================= TUTORIAL / SHEETS ================= */
+let tutI=0;
+function tutShow(i){const pages=[...document.querySelectorAll('.tut-page')];tutI=clamp(i,0,pages.length-1);pages.forEach((p,j)=>p.classList.toggle('on',j===tutI));
+ $('#tutDots').replaceChildren(...pages.map((_,j)=>el('i',j===tutI?'on':'')));$('#tutPrev').disabled=tutI===0;$('#tutNext').textContent=tutI===pages.length-1?'เข้าใจแล้ว ✔':'ถัดไป →';}
+function openTut(){tutShow(0);showOv('#ov-tut');}
+function openLog(){fillLog();showOv('#ov-log');const b=$('#logList2');b.scrollTop=b.scrollHeight;}
+function askExit(){showChoice('ออกจากเกม?',App.mode==='host'?'ถ้าคุณออก ห้องออนไลน์จะปิดและผู้เล่นทุกคนจะหลุดจากเกม':App.mode==='client'?'คุณจะออกจากห้องนี้':'ความคืบหน้าของเกมนี้จะหายไป',[{label:'ยกเลิก',cls:'ghost'},{label:'ออกจากเกม',cls:'gem',fn:leaveGame}]);}
+
+/* ================= INIT ================= */
+function init(){
+ setAppH();
+ window.addEventListener('resize',()=>{setAppH();if(App.view){sizeHand();layoutBoard(true);}});
+ window.addEventListener('orientationchange',()=>setTimeout(()=>{setAppH();if(App.view){sizeHand();layoutBoard(true);}},250));
+ if(window.visualViewport)window.visualViewport.addEventListener('resize',setAppH);
+ const bg=$('#bg');
+ [['c',-10,-10],['v',55,40],['c',20,70]].forEach(([k,l,t],i)=>{const g=el('div','blob '+k);g.style.left=l+'%';g.style.top=t+'%';g.style.animationDelay=(i*1.4)+'s';bg.appendChild(g);});
+ for(let i=0;i<28;i++){const d=el('div','spark');d.style.left=Math.random()*100+'%';d.style.top=Math.random()*100+'%';d.style.animationDuration=(2.5+Math.random()*4)+'s';d.style.animationDelay=(-Math.random()*6)+'s';bg.appendChild(d);}
+ $('#heroGem').innerHTML=gem(260,128,30);
+ let hd='';for(let i=0;i<7;i++)hd+=dwarfSVG(i,`x="${85+i*50}" y="168" width="46" height="46"`);$('#heroDwarfs').innerHTML=hd;
+ Sound.sfxOn=store.get('sfx')!=='0';const wantMusic=store.get('music')==='1';syncSoundButtons();
+ if(wantMusic){const kick=()=>{window.removeEventListener('pointerdown',kick);if(!Sound.musicOn){Sound.musicOn=true;Sound.startMusic();syncSoundButtons();}};window.addEventListener('pointerdown',kick);}
+ const nm=store.get('name')||'';$('#soloName').value=nm;$('#onName').value=nm;
+
+ $('#btnSolo').onclick=()=>{Sound.play('select');soloInfo();showScreen('solo');};
+ $('#btnOnline').onclick=()=>{Sound.play('select');onErr('');onStatus('');if(!Net.role){$('#onForm').hidden=false;$('#onLobby').hidden=true;}showScreen('online');};
+ $('#btnResume').onclick=resume;
+ $('#btnHowto').onclick=openTut;
+ document.querySelectorAll('[data-tog="music"]').forEach(b=>b.onclick=toggleMusic);
+ document.querySelectorAll('[data-tog="sfx"]').forEach(b=>b.onclick=toggleSfx);
+ buildSeg($('#soloCount'),3,10,App.soloN,n=>{App.soloN=n;soloInfo();});
+ buildSeg($('#soloRounds'),1,5,App.soloR,n=>{App.soloR=n;soloInfo();});soloInfo();
+ $('#soloBack').onclick=()=>showScreen('menu');$('#soloStart').onclick=startSolo;
+ buildSeg($('#onSeats'),3,10,App.onSeats,n=>{App.onSeats=n;});
+ buildSeg($('#onRounds'),1,5,App.onR,n=>{App.onR=n;});
+ $('#tabCreate').onclick=()=>setTab('create');$('#tabJoin').onclick=()=>setTab('join');
+ $('#onCreate').onclick=()=>{const name=cleanName($('#onName').value);store.set('name',name);netShutdown();Net.seats=App.onSeats;Net.rounds=App.onR;Net.stone=$('#onStone').checked;Net.fill=$('#onFill').checked;S=null;App.mode=null;Net.name=name;hostCreate(null);};
+ $('#onJoin').onclick=()=>{const code=$('#onCode').value.trim().toUpperCase();if(!/^[A-Z0-9]{5}$/.test(code)){onErr('รหัสห้องต้องมี 5 ตัวอักษร');return;}const name=cleanName($('#onName').value);store.set('name',name);clientJoin(code,name);};
+ $('#onCode').addEventListener('input',e=>{e.target.value=e.target.value.toUpperCase().replace(/[^A-Z0-9]/g,'');});
+ $('#onBack').onclick=()=>{if(Net.role&&!S){hostCloseRoom();store.del('last');$('#onForm').hidden=false;$('#onLobby').hidden=true;}showScreen('menu');refreshResume();};
+ $('#lbLeave').onclick=()=>{hostCloseRoom();store.del('last');$('#onForm').hidden=false;$('#onLobby').hidden=true;onStatus('');};
+ $('#lbStart').onclick=hostStart;
+ $('#lbCopy').onclick=()=>{const t=$('#lbLink').value;const done=()=>toast('คัดลอกลิงก์แล้ว 📋','good');const fb=()=>{try{$('#lbLink').select();document.execCommand('copy');done();}catch(e){toast('คัดลอกไม่สำเร็จ กรุณาคัดลอกเอง','bad');}};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(done,fb);else fb();};
+
+ $('#board').addEventListener('click',onBoardClick);
+ $('#btnConfirm').onclick=confirmAction;$('#btnDiscard').onclick=discardSel;$('#btnRotate').onclick=rotateSel;$('#btnCancel').onclick=cancelSel;
+ $('#roleChip').onclick=()=>{if(App.view&&App.view.me&&App.view.me.role)showRole(App.view,false);};
+ $('#roleOk').onclick=()=>hideOv('#ov-role');$('#peekOk').onclick=()=>hideOv('#ov-peek');
+ $('#roundNext').onclick=()=>{if(canHost())send({type:'nextRound'});};
+ $('#winAgain').onclick=restartGame;$('#winMenu').onclick=leaveGame;
+ $('#btnLog').onclick=openLog;$('#logClose').onclick=()=>hideOv('#ov-log');
+ $('#btnMenu').onclick=()=>showOv('#ov-menu');$('#smClose').onclick=()=>hideOv('#ov-menu');
+ $('#smHelp').onclick=()=>{hideOv('#ov-menu');openTut();};
+ $('#smLog').onclick=()=>{hideOv('#ov-menu');openLog();};
+ $('#smRole').onclick=()=>{hideOv('#ov-menu');if(App.view&&App.view.me&&App.view.me.role)showRole(App.view,false);};
+ $('#smExit').onclick=()=>{hideOv('#ov-menu');askExit();};
+ $('#errMenu').onclick=()=>{hideOv('#ov-error');leaveGame();};
+ $('#tutPrev').onclick=()=>tutShow(tutI-1);
+ $('#tutNext').onclick=()=>{if(tutI>=document.querySelectorAll('.tut-page').length-1)hideOv('#ov-tut');else tutShow(tutI+1);};
+ $('#tutClose').onclick=()=>hideOv('#ov-tut');
+
+ if(window.ResizeObserver){new ResizeObserver(()=>{if(App.view)layoutBoard(true);}).observe($('#boardWrap'));new ResizeObserver(()=>{if(App.view)sizeHand();}).observe($('#hand'));}
+ window.addEventListener('keydown',e=>{if(!App.view||e.target.tagName==='INPUT'||Modals.stack.length)return;if(e.key==='Escape')cancelSel();else if(e.key==='r'||e.key==='R')rotateSel();else if(e.key==='Enter')confirmAction();});
+ setInterval(hostWatch,2000);
+
+ refreshResume();
+ const q=new URLSearchParams(location.search).get('room');
+ if(q&&/^[A-Za-z0-9]{5}$/.test(q)){showScreen('online');setTab('join');$('#onCode').value=q.toUpperCase();onStatus('ใส่ชื่อของคุณ แล้วกด “เข้าร่วมห้อง”');}
+}
+try{init();window.__booted=true;clearTimeout(window.__bootTimer);}
+catch(err){console.error(err);const e=document.getElementById('bootError');document.getElementById('bootErrorMsg').textContent='เริ่มเกมไม่สำเร็จ: '+(err&&err.message||err);e.style.display='flex';}
+})();
+</script>
+</body>
+</html>
